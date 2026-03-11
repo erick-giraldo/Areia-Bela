@@ -17,8 +17,8 @@ export default function HomePage() {
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920"
-            alt="Grand Azure Resort aerial view"
+            src={propertyInfo.images[0]}
+            alt={`${propertyInfo.name} front view`}
             fill
             className="object-cover"
             priority
@@ -31,11 +31,11 @@ export default function HomePage() {
             Welcome to
           </p>
           <h1 className="font-serif text-5xl md:text-7xl font-semibold mb-6 text-balance">
-            Areia Bela
+            {propertyInfo.name}
           </h1>
           <p className="text-lg md:text-xl text-background/90 max-w-2xl mx-auto mb-8 text-pretty">
-            Experience luxury at its finest. Stunning ocean views, world-class amenities,
-            and impeccable service await you at Miami Beach's premier destination.
+            Experience comfort and style. A private heated pool, fantastic amenities,
+            and impeccable design await you at {propertyInfo.city}'s premier destination.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link href="/rooms">
@@ -88,10 +88,10 @@ export default function HomePage() {
               Accommodations
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              Our Featured Rooms
+              The Property
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              From cozy standard rooms to our magnificent penthouse, discover the perfect space for your stay.
+              Discover the perfect space for your stay in our newly renovated casa.
             </p>
           </div>
 
@@ -119,16 +119,16 @@ export default function HomePage() {
             <div className="relative">
               <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800"
-                  alt="Resort pool area"
+                  src={propertyInfo.images[1]}
+                  alt="Casa interior"
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 w-48 h-48 rounded-lg overflow-hidden border-4 border-background shadow-lg hidden md:block">
                 <Image
-                  src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400"
-                  alt="Resort interior"
+                  src={propertyInfo.images[2]}
+                  alt="Casa amenities"
                   fill
                   className="object-cover"
                 />
@@ -295,7 +295,7 @@ export default function HomePage() {
             Ready for an Unforgettable Stay?
           </h2>
           <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-            Book your luxury escape today and experience the finest hospitality Miami Beach has to offer.
+            Book your escape today and experience the finest hospitality {propertyInfo.city} has to offer.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/rooms">

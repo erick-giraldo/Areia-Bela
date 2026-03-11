@@ -1,5 +1,5 @@
 // Room Types
-export type RoomType = 'standard' | 'deluxe' | 'family-suite' | 'luxury-suite' | 'penthouse'
+export type RoomType = 'standard' | 'deluxe' | 'family-suite' | 'luxury-suite' | 'penthouse' | 'casa'
 
 export interface Room {
   id: string

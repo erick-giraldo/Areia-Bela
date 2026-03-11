@@ -19,8 +19,10 @@ interface RoomCardProps {
 
 const amenityIcons: Record<string, React.ElementType> = {
   'WiFi': Wifi,
+  'High-speed WiFi': Wifi,
   'Air Conditioning': Wind,
   'Flat Screen TV': Tv,
+  'HDTV with Roku': Tv,
 }
 
 export function RoomCard({ room, checkIn, checkOut, guests }: RoomCardProps) {
