@@ -21,7 +21,7 @@ import {
 import { cn } from '@/lib/utils'
 
 interface BookingWidgetProps {
-  variant?: 'hero' | 'compact' | 'inline'
+  variant?: 'hero' | 'compact' | 'inline' | 'sidebar'
   className?: string
 }
 
@@ -88,6 +88,80 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
         </Select>
         <Button onClick={handleSearch}>
           <Search className="h-4 w-4" />
+        </Button>
+      </div>
+    )
+  }
+
+  if (variant === 'sidebar') {
+    return (
+      <div className={cn('flex flex-col w-full', className)}>
+        <div className="border border-border rounded-xl overflow-hidden mb-4">
+          <div className="flex border-b border-border">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex-1 p-3 text-left hover:bg-muted/50 transition-colors border-r border-border focus:outline-none">
+                  <div className="text-[10px] uppercase font-bold text-foreground">Check-in</div>
+                  <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {mounted && checkIn ? format(checkIn, 'M/d/yyyy') : 'Add date'}
+                  </div>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                 <CalendarComponent
+                  mode="single"
+                  selected={checkIn}
+                  onSelect={(date) => {
+                    setCheckIn(date)
+                    if (date && checkOut && date >= checkOut) {
+                      setCheckOut(addDays(date, 1))
+                    }
+                  }}
+                  disabled={{ before: new Date() }}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex-1 p-3 text-left hover:bg-muted/50 transition-colors focus:outline-none">
+                  <div className="text-[10px] uppercase font-bold text-foreground">Checkout</div>
+                  <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {mounted && checkOut ? format(checkOut, 'M/d/yyyy') : 'Add date'}
+                  </div>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="end">
+                 <CalendarComponent
+                  mode="single"
+                  selected={checkOut}
+                  onSelect={setCheckOut}
+                  disabled={{ before: checkIn || new Date() }}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <Select value={guests} onValueChange={setGuests}>
+            <SelectTrigger className="w-full border-0 focus:ring-0 rounded-none h-auto p-3 hover:bg-muted/50 transition-colors">
+               <div className="text-left flex-1">
+                 <div className="text-[10px] uppercase font-bold text-foreground">Guests</div>
+                 <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {guests} {guests === '1' ? 'guest' : 'guests'}
+                 </div>
+               </div>
+            </SelectTrigger>
+            <SelectContent>
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <SelectItem key={n} value={n.toString()}>
+                  {n} {n === 1 ? 'Guest' : 'Guests'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <Button onClick={handleSearch} className="w-full text-base font-semibold py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
+          Reserve
         </Button>
       </div>
     )

@@ -1,317 +1,289 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Star, MapPin, Award, Clock } from 'lucide-react'
+import { Star, Award, User, Waves, Key, MapPin, Wind, Cat, Calendar, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { BookingWidget } from '@/components/booking/booking-widget'
-import { RoomCard } from '@/components/rooms/room-card'
-import { rooms, reviews, propertyInfo, specialOffers } from '@/lib/mock-data'
+import { ImageGallery } from '@/components/rooms/image-gallery'
+import { reviews, propertyInfo } from '@/lib/mock-data'
 
 export default function HomePage() {
-  const featuredRooms = rooms.slice(0, 3)
-  const featuredReviews = reviews.slice(0, 3)
-
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={propertyInfo.images[0]}
-            alt={`${propertyInfo.name} front view`}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/20 to-foreground/60" />
-        </div>
-
-        <div className="relative z-10 container px-4 md:px-6 text-center text-background">
-          <p className="text-sm uppercase tracking-[0.3em] mb-4 text-background/80">
-            Welcome to
-          </p>
-          <h1 className="font-serif text-5xl md:text-7xl font-semibold mb-6 text-balance">
-            {propertyInfo.name}
-          </h1>
-          <p className="text-lg md:text-xl text-background/90 max-w-2xl mx-auto mb-8 text-pretty">
-            Experience comfort and style. A private heated pool, fantastic amenities,
-            and impeccable design await you at {propertyInfo.city}'s premier destination.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link href="/rooms">
-              <Button size="lg" className="text-base px-8">
-                Explore Our Rooms
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+    <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-10 py-6 mb-12">
+      {/* Listing Header */}
+      <div className="mb-6">
+        <h1 className="text-[26px] sm:text-[28px] font-semibold text-foreground mb-2">
+          {propertyInfo.name}
+        </h1>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-foreground">
+          <div className="flex items-center gap-1 font-semibold">
+            <Star className="h-4 w-4 fill-foreground" />
+            <span>4.9</span>
+            <span>·</span>
+            <Link href="#reviews" className="underline hover:opacity-80">
+              {reviews.length} reviews
             </Link>
-            <Link href="/about">
-              <Button size="lg" variant="outline" className="text-base px-8 bg-background/10 border-background/30 text-background hover:bg-background/20">
-                Discover More
-              </Button>
+          </div>
+          <div className="flex items-center gap-1">
+            <Award className="h-4 w-4" />
+            <span>Superhost</span>
+          </div>
+          <div className="flex items-center gap-1 font-semibold underline hover:opacity-80 cursor-pointer">
+            <Link href="#location">
+              {propertyInfo.city}, Florida, United States
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Booking Widget Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-20 container px-4 md:px-6">
-          <BookingWidget />
-        </div>
-      </section>
+      {/* Image Gallery */}
+      <div className="mb-10 lg:mb-12">
+        <ImageGallery images={propertyInfo.images} title={propertyInfo.name} />
+      </div>
 
-      {/* Features Section */}
-      <section className="pt-32 pb-20 bg-muted/30">
-        <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { icon: MapPin, label: 'Prime Location', value: 'Beachfront' },
-              { icon: Star, label: 'Guest Rating', value: '4.9/5' },
-              { icon: Award, label: 'Experience', value: '15+ Years' },
-              { icon: Clock, label: 'Service', value: '24/7' },
-            ].map((feature) => (
-              <div key={feature.label} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-2xl font-semibold text-foreground">{feature.value}</p>
-                <p className="text-sm text-muted-foreground">{feature.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Rooms Section */}
-      <section className="py-20">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Accommodations
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              The Property
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover the perfect space for your stay in our newly renovated casa.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredRooms.map((room) => (
-              <RoomCard key={room.id} room={room} />
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/rooms">
-              <Button variant="outline" size="lg">
-                View All Rooms
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative">
-              <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
-                <Image
-                  src={propertyInfo.images[1]}
-                  alt="Casa interior"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 rounded-lg overflow-hidden border-4 border-background shadow-lg hidden md:block">
-                <Image
-                  src={propertyInfo.images[2]}
-                  alt="Casa amenities"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
+      {/* Main Content Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-14 lg:gap-24 relative">
+        
+        {/* Left Column */}
+        <div className="w-full">
+          {/* Host Info */}
+          <div className="flex justify-between items-start pb-6 border-b border-border">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-                About Us
-              </p>
-              <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
-                A Legacy of Luxury
+              <h2 className="text-[22px] font-semibold text-foreground mb-1">
+                Entire casa hosted by Areia Bela
               </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {propertyInfo.description}
+              <p className="text-foreground/90">
+                6 guests · 3 bedrooms · 4 beds · 2 baths
               </p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {propertyInfo.amenities.slice(0, 4).map((amenity) => (
-                  <div key={amenity} className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    <span className="text-sm text-foreground">{amenity}</span>
-                  </div>
-                ))}
+            </div>
+            <div className="h-12 w-12 md:h-14 md:w-14 rounded-full overflow-hidden bg-muted ml-4 flex-shrink-0 relative">
+              <User className="absolute inset-0 m-auto h-7 w-7 md:h-8 md:w-8 text-muted-foreground" />
+            </div>
+          </div>
+
+          {/* Highlights */}
+          <div className="py-8 border-b border-border space-y-6">
+            <div className="flex gap-4 items-start">
+              <Waves className="h-7 w-7 flex-shrink-0 mt-0.5 text-foreground" />
+              <div>
+                <h3 className="font-semibold text-foreground text-base">Dive right in</h3>
+                <p className="text-foreground/70 text-sm">This is one of the few places in the area with a private heated pool.</p>
               </div>
-              <Link href="/about">
-                <Button>
-                  Learn More About Us
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+            </div>
+            <div className="flex gap-4 items-start">
+              <Key className="h-7 w-7 flex-shrink-0 mt-0.5 text-foreground" />
+              <div>
+                <h3 className="font-semibold text-foreground text-base">Self check-in</h3>
+                <p className="text-foreground/70 text-sm">Check yourself in with the smartlock.</p>
+              </div>
+            </div>
+            <div className="flex gap-4 items-start">
+              <Calendar className="h-7 w-7 flex-shrink-0 mt-0.5 text-foreground" />
+              <div>
+                <h3 className="font-semibold text-foreground text-base">Free cancellation for 48 hours</h3>
+                <p className="text-foreground/70 text-sm">Lock in this great location with peace of mind.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* AirCover Badge (Simulated) */}
+          <div className="py-8 border-b border-border">
+            <div className="text-[28px] font-bold text-primary tracking-tighter mb-4 flex">
+              <span className="text-foreground">air</span>cover
+            </div>
+            <p className="text-foreground/80 leading-relaxed mb-4">
+              Every booking includes free protection from Host cancellations, listing inaccuracies, and other issues like trouble checking in.
+            </p>
+            <Button variant="link" className="px-0 font-semibold underline underline-offset-4 text-foreground">
+              Learn more
+            </Button>
+          </div>
+
+          {/* Description Content */}
+          <div className="py-8 border-b border-border">
+            <p className="text-foreground/80 leading-relaxed whitespace-pre-wrap">
+              {propertyInfo.description}
+            </p>
+            <Button variant="link" className="px-0 font-semibold underline underline-offset-4 text-foreground mt-4 flex items-center">
+              Show more <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+
+          {/* Amenities Summary */}
+          <div className="py-12 border-b border-border">
+            <h2 className="text-[22px] font-semibold text-foreground mb-6">What this place offers</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+              {propertyInfo.amenities.slice(0, 8).map((amenity, index) => (
+                <div key={amenity} className="flex items-center gap-4 text-foreground/90">
+                  {/* Pseudo-randomizing icons for visual fidelity */}
+                  {index % 4 === 0 && <Waves className="h-6 w-6 text-foreground/80" />}
+                  {index % 4 === 1 && <Wind className="h-6 w-6 text-foreground/80" />}
+                  {index % 4 === 2 && <Cat className="h-6 w-6 text-foreground/80" />}
+                  {index % 4 === 3 && <User className="h-6 w-6 text-foreground/80" />}
+                  <span className="text-base">{amenity}</span>
+                </div>
+              ))}
+            </div>
+            <Button variant="outline" className="mt-8 px-6 py-6 font-semibold rounded-xl text-base w-full sm:w-auto h-auto border-foreground hover:bg-muted">
+              Show all 10 amenities
+            </Button>
+          </div>
+        </div>
+
+        {/* Right Column: Sticky Booking Widget (Desktop) */}
+        <div className="hidden lg:block relative">
+          <div className="sticky top-28 z-10 w-[350px]">
+            {/* The BookingWidget wrapper will use Shadcn components natively. We add shadow for pop. */}
+            <div className="bg-background border border-border rounded-xl shadow-[0_6px_16px_rgba(0,0,0,0.12)] p-6 block">
+              <div className="mb-6 flex items-baseline gap-1">
+                <span className="text-[22px] font-semibold text-foreground">$150</span>
+                <span className="text-foreground/80">night</span>
+              </div>
+              <BookingWidget variant="compact" className="flex flex-col gap-4 [&>div]:w-full [&>button]:w-full" />
+              <div className="mt-4 text-center text-sm text-foreground/70">
+                You won't be charged yet
+              </div>
+              
+              <div className="mt-6 space-y-4 border-b border-border pb-6">
+                <div className="flex justify-between text-foreground/90 underline">
+                  <span>$150 x 3 nights</span>
+                  <span>$450</span>
+                </div>
+                <div className="flex justify-between text-foreground/90 underline">
+                  <span>Cleaning fee</span>
+                  <span>$120</span>
+                </div>
+                <div className="flex justify-between text-foreground/90 underline">
+                  <span>Airbnb service fee</span>
+                  <span>$80</span>
+                </div>
+              </div>
+              
+              <div className="flex justify-between text-foreground font-semibold pt-6 text-lg">
+                <span>Total before taxes</span>
+                <span>$650</span>
+              </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Special Offers Section */}
-      <section className="py-20">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Special Offers
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              Exclusive Deals
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Take advantage of our limited-time offers for an exceptional stay.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {specialOffers.map((offer) => (
-              <Card key={offer.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold text-lg text-foreground mb-1">
-                        {offer.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {offer.description}
-                      </p>
-                    </div>
-                    {offer.discount > 0 && (
-                      <span className="bg-primary text-primary-foreground text-sm font-semibold px-3 py-1 rounded-full">
-                        {offer.discount}% OFF
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
-                    <code className="text-sm font-mono bg-muted px-2 py-1 rounded">
-                      {offer.code}
-                    </code>
-                    <Link href="/rooms">
-                      <Button variant="ghost" size="sm">
-                        Book Now
-                        <ArrowRight className="ml-1 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/offers">
-              <Button variant="outline" size="lg">
-                View All Offers
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      </div>
 
       {/* Reviews Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Testimonials
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              What Our Guests Say
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredReviews.map((review) => (
-              <Card key={review.id} className="bg-card">
-                <CardContent className="p-6">
-                  <div className="flex gap-1 mb-4">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${i < review.rating
-                            ? 'fill-primary text-primary'
-                            : 'fill-muted text-muted'
-                          }`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-foreground mb-4 line-clamp-4">
-                    "{review.comment}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    {review.guestAvatar && (
-                      <Image
-                        src={review.guestAvatar}
-                        alt={review.guestName}
-                        width={40}
-                        height={40}
-                        className="rounded-full object-cover"
-                      />
-                    )}
-                    <div>
-                      <p className="font-medium text-foreground">{review.guestName}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {review.roomType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/reviews">
-              <Button variant="outline" size="lg">
-                Read All Reviews
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
+      <section id="reviews" className="py-12 border-b border-border">
+        <div className="flex items-center gap-2 text-[22px] font-semibold text-foreground mb-8">
+          <Star className="h-5 w-5 fill-current" />
+          <span>4.9 · {reviews.length} reviews</span>
         </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
+          {reviews.map((review) => (
+            <div key={review.id} className="w-full">
+              <div className="flex items-center gap-4 mb-4">
+                {review.guestAvatar ? (
+                  <Image
+                    src={review.guestAvatar}
+                    alt={review.guestName}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover bg-muted"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                     <User className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                )}
+                <div>
+                  <h3 className="font-semibold text-foreground text-base">{review.guestName}</h3>
+                  <div className="text-sm text-foreground/70 flex items-center gap-1">
+                    <span>{review.rating >= 4 ? `${review.rating} years on Airbnb` : 'Joined 2024'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2 text-sm text-foreground mb-2">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-2.5 w-2.5 ${i < review.rating
+                          ? 'fill-foreground text-foreground'
+                          : 'fill-muted text-muted'
+                        }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-foreground/50">·</span>
+                <span className="font-semibold text-foreground/80">{review.rating >= 4.5 ? '2 weeks ago' : '1 month ago'}</span>
+                <span className="text-foreground/50">·</span>
+                <span className="text-foreground/80">Stayed a few nights</span>
+              </div>
+              
+              <p className="text-foreground/90 leading-relaxed mb-3 line-clamp-4">
+                {review.comment}
+              </p>
+              <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity">
+                Show more
+              </Button>
+            </div>
+          ))}
+        </div>
+        <Button variant="outline" className="mt-8 px-6 py-6 font-semibold rounded-xl text-base h-auto border-foreground hover:bg-muted">
+          Show all {reviews.length} reviews
+        </Button>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container px-4 md:px-6 text-center">
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-4">
-            Ready for an Unforgettable Stay?
+      {/* Location Section */}
+      <section id="location" className="py-12 border-b border-border">
+        <div className="mb-6">
+          <h2 className="font-serif text-[22px] font-semibold text-foreground">
+            Where you'll be
           </h2>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-            Book your escape today and experience the finest hospitality {propertyInfo.city} has to offer.
+        </div>
+        
+        <div className="w-full h-[350px] md:h-[480px] rounded-2xl overflow-hidden bg-muted relative mb-8">
+          <iframe 
+            src="https://maps.google.com/maps?q=27.8162469,-82.7856376&t=&z=17&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Areia Bela Location Map"
+          ></iframe>
+        </div>
+        
+        <div className="max-w-2xl">
+          <h3 className="font-semibold text-foreground mb-3 text-lg">
+            Areia Bela, Madeira Beach, Florida
+          </h3>
+          <p className="text-foreground/80 leading-relaxed text-base">
+            The property is ideally located just a 5-minute walk from the stunning white sands of Madeira Beach. 
+            You'll be close to local shops, waterfront dining, and the famous John's Pass Village & Boardwalk.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/rooms">
-              <Button size="lg" variant="secondary" className="text-base px-8">
-                Book Your Stay
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Contact Us
-              </Button>
-            </Link>
+          <div className="mt-4">
+            <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity flex items-center" asChild>
+              <a href="https://www.google.com/maps/place/Areia+Bela/@27.8162469,-82.7856376,17z/data=!3m1!4b1!4m6!3m5!1s0x88c2fd15ebc9ec1f:0xea5d3d7f3368a9aa!8m2!3d27.8162469!4d-82.7856376!16s%2Fg%2F11ysmwhml3!18m1!1e1" target="_blank" rel="noopener noreferrer">
+                Show more <ChevronRight className="h-4 w-4 ml-1" />
+              </a>
+            </Button>
           </div>
         </div>
       </section>
+      
+      {/* Mobile Sticky Booking Footer */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 flex justify-between items-center z-40">
+        <div>
+          <div className="font-semibold text-foreground text-lg flex items-center gap-1">
+             $150 <span className="text-sm font-normal text-foreground/80">night</span>
+          </div>
+          <p className="text-xs text-foreground/80 underline font-medium">Oct 12 - 17</p>
+        </div>
+        <Button className="w-1/2 rounded-lg font-semibold text-base py-6">
+          Reserve
+        </Button>
+      </div>
+
     </div>
   )
 }
