@@ -235,38 +235,60 @@ export default function HomePage() {
       {/* Location Section */}
       <section id="location" className="py-12 border-b border-border">
         <div className="mb-6">
-          <h2 className="font-serif text-[22px] font-semibold text-foreground">
+          <h2 className="font-serif text-[26px] font-semibold text-foreground">
             Where you'll be
           </h2>
+          <p className="text-foreground/80 mt-1">St. Petersburg, Florida, United States</p>
         </div>
         
-        <div className="w-full h-[350px] md:h-[480px] rounded-2xl overflow-hidden bg-muted relative mb-8">
+        <div className="group relative w-full h-[350px] md:h-[500px] rounded-3xl overflow-hidden shadow-sm mb-8">
           <iframe 
-            src="https://maps.google.com/maps?q=27.8162469,-82.7856376&t=&z=17&ie=UTF8&iwloc=&output=embed" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.27419102434!2d-82.78821252441964!3d27.816251620242203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88c2fd15ebc9ec1f%3A0xea5d3d7f3368a9aa!2sAreia%20Bela!5e0!3m2!1sen!2sus!4v1710128828956!5m2!1sen!2sus"
             width="100%" 
             height="100%" 
             style={{ border: 0 }} 
             allowFullScreen 
             loading="lazy" 
             referrerPolicy="no-referrer-when-downgrade"
-            title="Areia Bela Location Map"
+            title="Areia Bela Exact Location Map"
+            className="transition-transform duration-700 group-hover:scale-[1.02]"
           ></iframe>
         </div>
         
-        <div className="max-w-2xl">
-          <h3 className="font-semibold text-foreground mb-3 text-lg">
-            Areia Bela, Madeira Beach, Florida
-          </h3>
-          <p className="text-foreground/80 leading-relaxed text-base">
-            The property is ideally located just a 5-minute walk from the stunning white sands of Madeira Beach. 
-            You'll be close to local shops, waterfront dining, and the famous John's Pass Village & Boardwalk.
-          </p>
-          <div className="mt-4">
-            <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity flex items-center" asChild>
-              <a href="https://www.google.com/maps/place/Areia+Bela/@27.8162469,-82.7856376,17z/data=!3m1!4b1!4m6!3m5!1s0x88c2fd15ebc9ec1f:0xea5d3d7f3368a9aa!8m2!3d27.8162469!4d-82.7856376!16s%2Fg%2F11ysmwhml3!18m1!1e1" target="_blank" rel="noopener noreferrer">
-                Show more <ChevronRight className="h-4 w-4 ml-1" />
-              </a>
-            </Button>
+        <div className="flex flex-col md:flex-row gap-8 justify-between">
+          <div className="max-w-2xl">
+            <h3 className="font-semibold text-foreground mb-3 text-lg">
+              Areia Bela, Madeira Beach, Florida
+            </h3>
+            <p className="text-foreground/80 leading-relaxed text-base">
+              The property is ideally located just a 5-minute walk from the stunning white sands of Madeira Beach. 
+              You'll be close to local shops, waterfront dining, and the famous John's Pass Village & Boardwalk.
+            </p>
+            <div className="mt-4">
+              <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity flex items-center" asChild>
+                <a href="https://www.google.com/maps/place/Areia+Bela/@27.8162469,-82.7856376,17z/data=!3m1!4b1!4m6!3m5!1s0x88c2fd15ebc9ec1f:0xea5d3d7f3368a9aa!8m2!3d27.8162469!4d-82.7856376!16s%2Fg%2F11ysmwhml3!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDMwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+                  Show more <ChevronRight className="h-4 w-4 ml-1" />
+                </a>
+              </Button>
+            </div>
+          </div>
+          
+          <div className="w-full md:w-[300px] bg-muted/30 p-6 rounded-2xl flex-shrink-0">
+             <h4 className="font-semibold text-foreground mb-4">Neighborhood highlights</h4>
+             <ul className="space-y-4">
+               <li className="flex items-center gap-3 text-sm text-foreground/80">
+                  <Waves className="h-5 w-5 text-primary" />
+                  <span>5 mins to Madeira Beach</span>
+               </li>
+               <li className="flex items-center gap-3 text-sm text-foreground/80">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <span>John's Pass Village</span>
+               </li>
+               <li className="flex items-center gap-3 text-sm text-foreground/80">
+                  <Star className="h-5 w-5 text-primary" />
+                  <span>Waterfront Dining</span>
+               </li>
+             </ul>
           </div>
         </div>
       </section>
