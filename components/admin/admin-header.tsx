@@ -1,7 +1,8 @@
 'use client'
 
-import { Bell, Search, User, ExternalLink } from 'lucide-react'
+import { Bell, Search, User, ExternalLink, Menu, LogOut } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -13,6 +14,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet'
+import { cn } from '@/lib/utils'
+import { adminNavigation } from '@/components/admin/admin-sidebar'
 
 interface AdminHeaderProps {
   title: string
@@ -20,13 +24,82 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({ title, description }: AdminHeaderProps) {
+  const pathname = usePathname()
+
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background px-6">
-      <div>
-        <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background px-4 md:px-6">
+      <div className="flex items-center gap-4">
+        {/* Mobile Menu */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Sidebar</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[280px] p-0 border-r border-sidebar-border bg-sidebar flex flex-col">
+            <SheetTitle className="sr-only">Admin Sidebar Menu</SheetTitle>
+            <SheetDescription className="sr-only">Menu links for the admin dashboard</SheetDescription>
+            <div className="flex flex-col h-full bg-sidebar">
+              {/* Logo */}
+              <div className="flex h-16 items-center border-b border-sidebar-border px-4">
+                <Link href="/admin" className="flex flex-col">
+                  <span className="font-serif text-lg font-semibold text-sidebar-foreground">
+                    Grand Azure
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/60">
+                    Admin Portal
+                  </span>
+                </Link>
+              </div>
+
+              {/* Navigation */}
+              <nav className="flex-1 overflow-y-auto py-4">
+                <ul className="space-y-1 px-2">
+                  {adminNavigation.map((item) => {
+                    const isActive = pathname === item.href || 
+                      (item.href !== '/admin' && pathname.startsWith(item.href))
+                    
+                    return (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                            isActive
+                              ? 'bg-sidebar-primary text-sidebar-primary-foreground'
+                              : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                          )}
+                        >
+                          <item.icon className="h-5 w-5 flex-shrink-0" />
+                          <span>{item.name}</span>
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </nav>
+
+              {/* Footer */}
+              <div className="border-t border-sidebar-border p-4">
+                <Link
+                  href="/"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span>Exit Admin</span>
+                </Link>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+        
+        <div>
+          <h1 className="text-xl font-semibold text-foreground">{title}</h1>
+          {description && (
+            <p className="text-sm text-muted-foreground hidden sm:block">{description}</p>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-4">

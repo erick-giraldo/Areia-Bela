@@ -8,7 +8,7 @@ export default function AdminDashboardLayout({
   return (
     <div className="min-h-screen bg-background">
       <AdminSidebar />
-      <div className="pl-16 lg:pl-64 transition-all duration-300">
+      <div className="md:pl-16 lg:pl-64 transition-all duration-300">
         {children}
       </div>
     </div>

@@ -30,7 +30,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-const navigation = [
+export const adminNavigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Reservations', href: '/admin/reservations', icon: ClipboardList },
   { name: 'Rooms', href: '/admin/rooms', icon: BedDouble },
@@ -52,10 +52,10 @@ export function AdminSidebar() {
   return (
     <TooltipProvider delayDuration={0}>
       <aside className={cn(
-        'fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300',
+        'fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 hidden md:flex flex-col',
         collapsed ? 'w-16' : 'w-64'
       )}>
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col w-full">
           {/* Logo */}
           <div className={cn(
             'flex h-16 items-center border-b border-sidebar-border px-4',
@@ -84,7 +84,7 @@ export function AdminSidebar() {
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto py-4">
             <ul className="space-y-1 px-2">
-              {navigation.map((item) => {
+              {adminNavigation.map((item) => {
                 const isActive = pathname === item.href || 
                   (item.href !== '/admin' && pathname.startsWith(item.href))
                 

@@ -76,8 +76,8 @@ export function Header() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <div className="flex flex-col gap-6 mt-6">
+          <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
+            <div className="flex flex-col gap-6 mt-6 pb-6">
               <div className="flex flex-col">
                 <span className="font-serif text-xl font-semibold tracking-tight">
                   Grand Azure
