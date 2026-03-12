@@ -1,30 +1,32 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Check, Waves, Utensils, Dumbbell, Sparkles, Car, Wifi, Clock, Umbrella } from 'lucide-react'
+import { ArrowRight, Check, Waves, Wifi, Coffee, Bike } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { propertyInfo } from '@/lib/mock-data'
+import { listingDetail, getAllHosts, listingPhotos } from '@/lib/listing-data'
 
-const amenities = [
-  { icon: Waves, name: 'Infinity Pool', description: 'Stunning ocean-view infinity pool' },
-  { icon: Umbrella, name: 'Private Beach', description: 'Exclusive access to pristine beach' },
-  { icon: Sparkles, name: 'Spa & Wellness', description: 'Full-service spa with treatments' },
-  { icon: Utensils, name: 'Fine Dining', description: 'Award-winning restaurant & bar' },
-  { icon: Dumbbell, name: 'Fitness Center', description: '24/7 state-of-the-art gym' },
-  { icon: Car, name: 'Valet Parking', description: 'Complimentary valet service' },
-  { icon: Wifi, name: 'High-Speed WiFi', description: 'Free WiFi throughout property' },
-  { icon: Clock, name: '24/7 Concierge', description: 'Round-the-clock assistance' },
+const amenityHighlights = [
+  { icon: Waves, name: 'Piscina climatizada', description: 'Piscina privada con pantalla, calefacción en temporada' },
+  { icon: Wifi, name: 'WiFi de alta velocidad', description: '150+ Mbps para teletrabajo y streaming' },
+  { icon: Coffee, name: 'Bar de café', description: 'Cafetera Keurig, snacks y zona de relax' },
+  { icon: Bike, name: 'Bicicletas', description: '2 bicicletas con candado para explorar la zona' },
 ]
 
 export default function AboutPage() {
+  const hosts = getAllHosts()
+  const galleryImages = listingPhotos.slice(0, 6)
+  const firstPhoto = listingDetail.photos[0]?.large
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920"
-            alt="Grand Azure Resort"
+            src={firstPhoto ?? propertyInfo.images[0]}
+            alt="Areia Bela"
             fill
             className="object-cover"
             priority
@@ -33,41 +35,39 @@ export default function AboutPage() {
         </div>
         <div className="relative z-10 text-center text-background px-4">
           <p className="text-sm uppercase tracking-[0.3em] mb-4 text-background/80">
-            About Us
+            Sobre nosotros
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
-            A Legacy of Luxury
+            Areia Bela
           </h1>
           <p className="text-lg text-background/90 max-w-2xl mx-auto">
-            Since 2010, Grand Azure Resort has been the premier destination for luxury hospitality in Miami Beach.
+            Casa de vacaciones a 5 min de Madeira Beach. St. Petersburg, Florida.
           </p>
         </div>
       </section>
 
-      {/* Story Section */}
+      {/* Story */}
       <section className="py-20">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-                Our Story
+                Nuestra historia
               </p>
               <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6">
-                Where Luxury Meets the Sea
+                Donde el confort se encuentra con la playa
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                {propertyInfo.description}
+                {listingDetail.sectionedDescription.summary}
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Our commitment to excellence has earned us recognition as one of the top luxury resorts 
-                in the region. From our meticulously designed rooms to our world-class amenities, 
-                every detail has been crafted to exceed your expectations.
+                {listingDetail.sectionedDescription.neighborhoodOverview}
               </p>
               <div className="space-y-3">
-                {propertyInfo.policies.map((policy) => (
-                  <div key={policy} className="flex items-center gap-3">
+                {(listingDetail.houseRulesModule?.structuredRules ?? []).map((r) => (
+                  <div key={r.text} className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span className="text-foreground">{policy}</span>
+                    <span className="text-foreground">{r.text}</span>
                   </div>
                 ))}
               </div>
@@ -75,8 +75,8 @@ export default function AboutPage() {
             <div className="relative">
               <div className="aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800"
-                  alt="Resort lobby"
+                  src={listingDetail.photos[1]?.large ?? propertyInfo.images[1]}
+                  alt="Areia Bela - zona exterior"
                   fill
                   className="object-cover"
                 />
@@ -86,30 +86,58 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Amenities Section */}
-      <section id="amenities" className="py-20 bg-muted/30">
+      {/* Hosts */}
+      <section className="py-20 bg-muted/30">
         <div className="container px-4 md:px-6">
           <div className="text-center mb-12">
             <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Amenities
+              Anfitriones
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              World-Class Facilities
+              Quién te recibe
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Every amenity has been thoughtfully designed to enhance your stay and create unforgettable memories.
+              Conoce al equipo que hace de Areia Bela un lugar especial.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {amenities.map((amenity) => (
-              <Card key={amenity.name} className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <amenity.icon className="h-8 w-8 text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {hosts.map((host) => (
+              <Card key={host.id} className="overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="relative aspect-square max-w-[280px] mx-auto">
+                    <Image
+                      src={host.pictureLargeUrl ?? host.pictureUrl}
+                      alt={host.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">{amenity.name}</h3>
-                  <p className="text-sm text-muted-foreground">{amenity.description}</p>
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-foreground text-lg">{host.name}</h3>
+                      {host.isSuperhost && (
+                        <Badge variant="secondary" className="text-xs">Superhost</Badge>
+                      )}
+                    </div>
+                    {host.memberSinceFullStr && (
+                      <p className="text-sm text-muted-foreground mb-2">{host.memberSinceFullStr}</p>
+                    )}
+                    {host.about && (
+                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
+                        {host.about}
+                      </p>
+                    )}
+                    {host.languages?.length > 0 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Idiomas: {host.languages.join(', ')}
+                      </p>
+                    )}
+                    {host.responseTimeWithoutNa && (
+                      <p className="text-xs text-primary mt-1">
+                        Responde {host.responseTimeWithoutNa}
+                      </p>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -117,36 +145,65 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="py-20">
+      {/* Amenities */}
+      <section id="amenities" className="py-20">
         <div className="container px-4 md:px-6">
           <div className="text-center mb-12">
             <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Gallery
+              Comodidades
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              Lo que ofrece la casa
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Cocina equipada, piscina, WiFi, aparcamiento y mucho más.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {amenityHighlights.map((a) => (
+              <Card key={a.name} className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <a.icon className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">{a.name}</h3>
+                  <p className="text-sm text-muted-foreground">{a.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {listingDetail.amenities.slice(0, 16).map((name) => (
+              <Badge key={name} variant="outline" className="text-xs">
+                {name}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-20 bg-muted/30">
+        <div className="container px-4 md:px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
+              Galería
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
-              Discover Our Property
+              Conoce la casa
             </h2>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600',
-              'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600',
-              'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600',
-              'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600',
-              'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600',
-              'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600',
-            ].map((image, index) => (
+            {galleryImages.map((photo, index) => (
               <div
-                key={index}
+                key={photo.id}
                 className={`relative rounded-lg overflow-hidden ${
                   index === 0 || index === 3 ? 'aspect-[4/3] md:col-span-2' : 'aspect-square'
                 }`}
               >
                 <Image
-                  src={image}
-                  alt={`Resort gallery image ${index + 1}`}
+                  src={photo.large}
+                  alt={photo.caption ?? `Areia Bela ${index + 1}`}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                 />
@@ -156,25 +213,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container px-4 md:px-6 text-center">
           <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-4">
-            Ready to Experience Grand Azure?
+            ¿Listo para Areia Bela?
           </h2>
           <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-            Book your stay today and discover why we're Miami Beach's premier luxury destination.
+            Reserva tu estancia y descubre la mejor base para disfrutar de Madeira Beach y St. Petersburg.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/rooms">
               <Button size="lg" variant="secondary">
-                View Our Rooms
+                Ver la casa y reservar
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/contact">
               <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Contact Us
+                Contactar
               </Button>
             </Link>
           </div>

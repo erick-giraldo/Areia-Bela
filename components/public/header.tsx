@@ -7,12 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
 const navigation = [
-  { name: 'Rooms', href: '/rooms' },
-  { name: 'Amenities', href: '/about#amenities' },
-  { name: 'Offers', href: '/offers' },
-  { name: 'Reviews', href: '/reviews' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'La casa', href: '/rooms' },
+  { name: 'Reseñas', href: '/reviews' },
+  { name: 'Sobre nosotros', href: '/about' },
+  { name: 'Ofertas', href: '/offers' },
+  { name: 'Contacto', href: '/contact' },
 ]
 
 export function Header() {
@@ -80,10 +79,10 @@ export function Header() {
             <div className="flex flex-col gap-6 mt-6 pb-6">
               <div className="flex flex-col">
                 <span className="font-serif text-xl font-semibold tracking-tight">
-                  Grand Azure
+                  Areia Bela
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Resort & Spa
+                  St. Petersburg, FL
                 </span>
               </div>
 

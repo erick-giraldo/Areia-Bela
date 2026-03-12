@@ -221,6 +221,72 @@ export interface Review {
   service: number
   value: number
   createdAt: string
+  /** Respuesta del anfitrión (opcional) */
+  hostResponse?: string
+  /** Fecha localizada para mostrar (ej. "Hace 1 semana") */
+  localizedDate?: string
+}
+
+// Host Types (from listing JSON)
+export interface Host {
+  id: number
+  firstName: string
+  name: string
+  about: string
+  pictureUrl: string
+  pictureLargeUrl?: string
+  isSuperhost: boolean
+  memberSinceFullStr: string
+  languages: string[]
+  responseRateWithoutNa?: string
+  responseTimeWithoutNa?: string
+  hostIntroTags?: string[]
+}
+
+// Listing photo with optional caption
+export interface ListingPhoto {
+  id: number
+  large: string
+  caption?: string
+  aspectRatio?: number
+}
+
+// Listing detail (from Airbnb JSON)
+export interface ListingDetail {
+  id: string
+  name: string
+  address: string
+  city: string
+  country: string
+  roomType: string
+  stars: number
+  numberOfGuests: number
+  bedroomLabel: string
+  bedLabel: string
+  bathroomLabel: string
+  primaryHost: Host
+  additionalHosts: Host[]
+  photos: ListingPhoto[]
+  amenities: string[]
+  sectionedDescription: {
+    summary: string
+    space?: string
+    description?: string
+    houseRules?: string
+    notes?: string
+    neighborhoodOverview?: string
+    transit?: string
+  }
+  houseRulesModule?: {
+    structuredRules: { text: string }[]
+    additionalRules?: string
+    selfCheckinInfo?: string
+  }
+  priceDetails?: { label: string; value: string }[]
+  checkInTime?: string
+  checkOutTime?: string
+  minNights?: number
+  maxNights?: number
 }
 
 // Property Types

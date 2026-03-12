@@ -3,6 +3,7 @@ import { Star } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { reviews } from '@/lib/mock-data'
+import { listingDetail } from '@/lib/listing-data'
 
 export default function ReviewsPage() {
   const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
@@ -13,10 +14,10 @@ export default function ReviewsPage() {
   }))
 
   const categories = [
-    { name: 'Cleanliness', value: reviews.reduce((sum, r) => sum + r.cleanliness, 0) / reviews.length },
-    { name: 'Location', value: reviews.reduce((sum, r) => sum + r.location, 0) / reviews.length },
-    { name: 'Service', value: reviews.reduce((sum, r) => sum + r.service, 0) / reviews.length },
-    { name: 'Value', value: reviews.reduce((sum, r) => sum + r.value, 0) / reviews.length },
+    { name: 'Limpieza', value: reviews.reduce((sum, r) => sum + r.cleanliness, 0) / reviews.length },
+    { name: 'Ubicación', value: reviews.reduce((sum, r) => sum + r.location, 0) / reviews.length },
+    { name: 'Servicio', value: reviews.reduce((sum, r) => sum + r.service, 0) / reviews.length },
+    { name: 'Relación calidad-precio', value: reviews.reduce((sum, r) => sum + r.value, 0) / reviews.length },
   ]
 
   return (
@@ -26,13 +27,13 @@ export default function ReviewsPage() {
         <div className="container px-4 md:px-6">
           <div className="text-center mb-8">
             <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Testimonials
+              Testimonios
             </p>
             <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              Guest Reviews
+              Reseñas de huéspedes
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Read what our guests have to say about their experience at Grand Azure Resort.
+              Lo que dicen los huéspedes de su estancia en Areia Bela.
             </p>
           </div>
         </div>
@@ -62,7 +63,7 @@ export default function ReviewsPage() {
                       ))}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Based on {reviews.length} reviews
+                      Basado en {reviews.length} reseñas
                     </p>
                   </div>
 
@@ -78,7 +79,7 @@ export default function ReviewsPage() {
                   </div>
 
                   <div className="space-y-4 pt-4 border-t border-border">
-                    <h3 className="font-semibold text-foreground">Rating Categories</h3>
+                    <h3 className="font-semibold text-foreground">Categorías</h3>
                     {categories.map((category) => (
                       <div key={category.name} className="flex justify-between items-center">
                         <span className="text-foreground">{category.name}</span>
@@ -115,7 +116,7 @@ export default function ReviewsPage() {
                           <div>
                             <h3 className="font-semibold text-foreground">{review.guestName}</h3>
                             <p className="text-sm text-muted-foreground">
-                              {review.roomType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} • {review.createdAt}
+                              {review.roomType === 'casa' ? 'Casa completa' : review.roomType} • {review.localizedDate ?? review.createdAt}
                             </p>
                           </div>
                           <div className="flex gap-0.5">
@@ -133,31 +134,42 @@ export default function ReviewsPage() {
                         </div>
                         <p className="text-foreground leading-relaxed">{review.comment}</p>
 
+                        {review.hostResponse && (
+                          <div className="mt-4 p-4 rounded-lg bg-muted/50 border-l-4 border-primary">
+                            <p className="text-sm font-medium text-muted-foreground mb-1">
+                              Respuesta de {listingDetail.primaryHost.firstName}
+                            </p>
+                            <p className="text-sm text-foreground whitespace-pre-line">
+                              {review.hostResponse.replace(/<br\/?>/gi, '\n')}
+                            </p>
+                          </div>
+                        )}
+
                         {/* Category Ratings */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
                           <div>
-                            <p className="text-xs text-muted-foreground">Cleanliness</p>
+                            <p className="text-xs text-muted-foreground">Limpieza</p>
                             <div className="flex items-center gap-1">
                               <span className="font-medium text-foreground">{review.cleanliness}</span>
                               <Star className="h-3 w-3 fill-primary text-primary" />
                             </div>
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground">Location</p>
+                            <p className="text-xs text-muted-foreground">Ubicación</p>
                             <div className="flex items-center gap-1">
                               <span className="font-medium text-foreground">{review.location}</span>
                               <Star className="h-3 w-3 fill-primary text-primary" />
                             </div>
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground">Service</p>
+                            <p className="text-xs text-muted-foreground">Servicio</p>
                             <div className="flex items-center gap-1">
                               <span className="font-medium text-foreground">{review.service}</span>
                               <Star className="h-3 w-3 fill-primary text-primary" />
                             </div>
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground">Value</p>
+                            <p className="text-xs text-muted-foreground">Calidad-precio</p>
                             <div className="flex items-center gap-1">
                               <span className="font-medium text-foreground">{review.value}</span>
                               <Star className="h-3 w-3 fill-primary text-primary" />
