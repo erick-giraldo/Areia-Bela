@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { format, addDays, differenceInDays } from 'date-fns'
-import { Calendar, Users, Tag, AlertCircle } from 'lucide-react'
+import { Calendar, Users, Tag, AlertCircle, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { Input } from '@/components/ui/input'
@@ -47,6 +47,11 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
   const [couponApplied, setCouponApplied] = useState(false)
   const [couponError, setCouponError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0
   
@@ -54,10 +59,6 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
   const priceData = checkIn && checkOut && nights > 0
     ? calculatePrice(room.id, format(checkIn, 'yyyy-MM-dd'), format(checkOut, 'yyyy-MM-dd'), couponApplied ? couponCode : undefined)
     : null
-
-  // Limited availability warning
-  const availableRooms = Math.floor(Math.random() * 3) + 1 // Simulated
-  const showLimitedWarning = availableRooms <= 2
 
   const handleApplyCoupon = () => {
     if (!couponCode.trim()) return
@@ -91,45 +92,31 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
     router.push(`/checkout?${params.toString()}`)
   }
 
+  if (!mounted) return null
+
   return (
-    <Card className="shadow-lg border-border">
-      <CardHeader className="pb-4">
-        <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-semibold text-foreground">
+    <Card className="shadow-[0_6px_16px_rgba(0,0,0,0.12)] border border-border rounded-2xl overflow-hidden sticky top-28">
+      <CardContent className="p-6">
+        <div className="flex items-baseline gap-1 mb-6">
+          <span className="text-[22px] font-semibold text-foreground">
             ${room.basePrice}
           </span>
-          <span className="text-muted-foreground">/ night</span>
+          <span className="text-foreground/80">night</span>
         </div>
-        {showLimitedWarning && (
-          <div className="flex items-center gap-2 text-sm text-destructive mt-2">
-            <AlertCircle className="h-4 w-4" />
-            <span>Only {availableRooms} {availableRooms === 1 ? 'room' : 'rooms'} left for your dates!</span>
-          </div>
-        )}
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        {/* Date Selection */}
-        <div className="grid grid-cols-2 gap-2">
-          <div className="space-y-2">
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-              Check-in
-            </Label>
+
+        <div className="border border-border rounded-xl overflow-hidden mb-4">
+          <div className="flex border-b border-border">
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    'w-full justify-start text-left font-normal',
-                    !checkIn && 'text-muted-foreground'
-                  )}
-                >
-                  <Calendar className="mr-2 h-4 w-4" />
-                  {checkIn ? format(checkIn, 'MMM d') : 'Select'}
-                </Button>
+                <button className="flex-1 p-3 text-left hover:bg-muted/50 transition-colors border-r border-border focus:outline-none">
+                  <div className="text-[10px] uppercase font-bold text-foreground">Check-in</div>
+                  <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {checkIn ? format(checkIn, 'M/d/yyyy') : 'Add date'}
+                  </div>
+                </button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <CalendarComponent
+                 <CalendarComponent
                   mode="single"
                   selected={checkIn}
                   onSelect={(date) => {
@@ -143,27 +130,17 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
                 />
               </PopoverContent>
             </Popover>
-          </div>
-          
-          <div className="space-y-2">
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-              Check-out
-            </Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    'w-full justify-start text-left font-normal',
-                    !checkOut && 'text-muted-foreground'
-                  )}
-                >
-                  <Calendar className="mr-2 h-4 w-4" />
-                  {checkOut ? format(checkOut, 'MMM d') : 'Select'}
-                </Button>
+                <button className="flex-1 p-3 text-left hover:bg-muted/50 transition-colors focus:outline-none">
+                  <div className="text-[10px] uppercase font-bold text-foreground">Checkout</div>
+                  <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {checkOut ? format(checkOut, 'M/d/yyyy') : 'Add date'}
+                  </div>
+                </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <CalendarComponent
+              <PopoverContent className="w-auto p-0" align="end">
+                 <CalendarComponent
                   mode="single"
                   selected={checkOut}
                   onSelect={setCheckOut}
@@ -173,22 +150,17 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
               </PopoverContent>
             </Popover>
           </div>
-        </div>
-
-        {/* Guests */}
-        <div className="space-y-2">
-          <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-            Guests
-          </Label>
           <Select value={guests} onValueChange={setGuests}>
-            <SelectTrigger>
-              <div className="flex items-center">
-                <Users className="mr-2 h-4 w-4 text-muted-foreground" />
-                <SelectValue />
-              </div>
+            <SelectTrigger className="w-full border-0 focus:ring-0 rounded-none h-auto p-3 hover:bg-muted/50 transition-colors">
+               <div className="text-left flex-1">
+                 <div className="text-[10px] uppercase font-bold text-foreground">Guests</div>
+                 <div className="text-sm text-foreground/80 mt-0.5 truncate">
+                    {guests} {guests === '1' ? 'guest' : 'guests'}
+                 </div>
+               </div>
             </SelectTrigger>
             <SelectContent>
-              {Array.from({ length: room.capacity }, (_, i) => i + 1).map((n) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <SelectItem key={n} value={n.toString()}>
                   {n} {n === 1 ? 'Guest' : 'Guests'}
                 </SelectItem>
@@ -197,92 +169,52 @@ export function BookingCard({ room, checkIn: initialCheckIn, checkOut: initialCh
           </Select>
         </div>
 
-        {/* Coupon Code */}
-        <div className="space-y-2">
-          <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-            Coupon Code
-          </Label>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Enter code"
-                value={couponCode}
-                onChange={(e) => {
-                  setCouponCode(e.target.value.toUpperCase())
-                  setCouponApplied(false)
-                  setCouponError('')
-                }}
-                className="pl-9"
-              />
-            </div>
-            <Button 
-              variant="outline" 
-              onClick={handleApplyCoupon}
-              disabled={!couponCode.trim() || couponApplied}
-            >
-              {couponApplied ? 'Applied' : 'Apply'}
-            </Button>
-          </div>
-          {couponError && (
-            <p className="text-sm text-destructive">{couponError}</p>
-          )}
-          {couponApplied && (
-            <p className="text-sm text-success">Coupon applied successfully!</p>
-          )}
-        </div>
-
-        {/* Reserve Button */}
         <Button 
-          className="w-full h-12 text-base" 
-          onClick={handleReserve}
+          onClick={handleReserve} 
           disabled={!checkIn || !checkOut || nights <= 0 || isLoading}
+          className="w-full text-base font-semibold py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl mb-4"
         >
-          {isLoading ? 'Processing...' : 'Reserve Now'}
+          {isLoading ? 'Processing...' : 'Reserve'}
         </Button>
-        
-        <p className="text-center text-sm text-muted-foreground">
-          You won't be charged yet
-        </p>
 
-        {/* Price Breakdown */}
-        {priceData && (
-          <>
-            <Separator />
-            
-            <div className="space-y-3">
-              <div className="flex justify-between text-foreground">
-                <span>${priceData.nightPrice} x {nights} {nights === 1 ? 'night' : 'nights'}</span>
-                <span>${priceData.subtotal}</span>
-              </div>
-              <div className="flex justify-between text-foreground">
-                <span>Cleaning fee</span>
-                <span>${priceData.cleaningFee}</span>
-              </div>
-              <div className="flex justify-between text-foreground">
-                <span>Service fee</span>
-                <span>${priceData.serviceFee}</span>
-              </div>
-              <div className="flex justify-between text-foreground">
-                <span>Taxes</span>
-                <span>${priceData.taxes}</span>
-              </div>
-              {priceData.discount > 0 && (
-                <div className="flex justify-between text-success">
-                  <span>Discount</span>
-                  <span>-${priceData.discount}</span>
-                </div>
-              )}
-              
-              <Separator />
-              
-              <div className="flex justify-between text-lg font-semibold text-foreground">
-                <span>Total</span>
-                <span>${priceData.total}</span>
-              </div>
+        <p className="text-center text-sm text-foreground/70 mb-6">You won't be charged yet</p>
+
+        {priceData && nights > 0 && (
+          <div className="space-y-4">
+            <div className="flex justify-between text-foreground/90 underline decoration-foreground/30">
+              <span>${room.basePrice} x {nights} nights</span>
+              <span>${priceData.subtotal}</span>
             </div>
-          </>
+            <div className="flex justify-between text-foreground/90 underline decoration-foreground/30">
+              <span>Cleaning fee</span>
+              <span>${priceData.cleaningFee}</span>
+            </div>
+            <div className="flex justify-between text-foreground/90 underline decoration-foreground/30">
+              <span>Service fee</span>
+              <span>${priceData.serviceFee}</span>
+            </div>
+            {priceData.discount > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>Coupon discount</span>
+                <span>-${priceData.discount}</span>
+              </div>
+            )}
+            <Separator className="my-4" />
+            <div className="flex justify-between text-lg font-semibold text-foreground pt-2">
+              <span>Total before taxes</span>
+              <span>${priceData.total}</span>
+            </div>
+          </div>
         )}
+
+        {/* Rare Find Badge */}
+        <div className="mt-8 pt-8 border-t border-border flex items-center gap-4">
+           <div className="flex flex-col flex-1">
+              <span className="font-semibold text-sm">This is a rare find</span>
+              <span className="text-xs text-foreground/70">Angelica's place is usually fully booked.</span>
+           </div>
+           <Award className="h-8 w-8 text-primary/80" />
+        </div>
       </CardContent>
     </Card>
   )

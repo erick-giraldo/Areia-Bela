@@ -336,11 +336,12 @@ export interface GuestInfo {
 }
 
 export interface PaymentInfo {
-  method: 'credit-card' | 'apple-pay' | 'google-pay' | 'paypal'
+  method: 'credit-card' | 'apple-pay' | 'google-pay' | 'paypal' | 'stripe'
   cardNumber?: string
   expiryDate?: string
   cvv?: string
   cardholderName?: string
+  paymentMethodId?: string
 }
 
 // Admin Room Types (for admin panel with more fields)

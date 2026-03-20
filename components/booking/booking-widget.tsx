@@ -52,49 +52,6 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
 
   if (variant === 'compact') {
     return (
-      <div className={cn('flex flex-wrap gap-2', className)}>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full sm:w-auto justify-start">
-              <Calendar className="mr-2 h-4 w-4" />
-              {mounted && checkIn ? format(checkIn, 'MMM d') : 'Check-in'} - {mounted && checkOut ? format(checkOut, 'MMM d') : 'Check-out'}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <CalendarComponent
-              mode="range"
-              selected={{ from: checkIn, to: checkOut }}
-              onSelect={(range) => {
-                setCheckIn(range?.from)
-                setCheckOut(range?.to)
-              }}
-              numberOfMonths={2}
-              disabled={{ before: new Date() }}
-            />
-          </PopoverContent>
-        </Popover>
-        <Select value={guests} onValueChange={setGuests}>
-          <SelectTrigger className="w-full sm:w-[140px]">
-            <Users className="mr-2 h-4 w-4" />
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {[1, 2, 3, 4, 5, 6].map((n) => (
-              <SelectItem key={n} value={n.toString()}>
-                {n} {n === 1 ? 'Guest' : 'Guests'}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Button onClick={handleSearch}>
-          <Search className="h-4 w-4" />
-        </Button>
-      </div>
-    )
-  }
-
-  if (variant === 'sidebar') {
-    return (
       <div className={cn('flex flex-col w-full', className)}>
         <div className="border border-border rounded-xl overflow-hidden mb-4">
           <div className="flex border-b border-border">
@@ -152,7 +109,7 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
                </div>
             </SelectTrigger>
             <SelectContent>
-              {[1, 2, 3, 4, 5, 6].map((n) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <SelectItem key={n} value={n.toString()}>
                   {n} {n === 1 ? 'Guest' : 'Guests'}
                 </SelectItem>
@@ -160,72 +117,47 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={handleSearch} className="w-full text-base font-semibold py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
+        <Button onClick={handleSearch} className="w-full text-base font-semibold py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
           Reserve
         </Button>
       </div>
     )
   }
 
-  return (
-    <div className={cn(
-      'bg-card rounded-xl shadow-lg border border-border p-6',
-      variant === 'hero' && 'max-w-4xl mx-auto',
-      className
-    )}>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {/* Check-in */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Check-in
-          </label>
+  if (variant === 'hero') {
+    return (
+      <div className={cn(
+        'bg-background border border-border shadow-[0_3px_12px_0_rgba(0,0,0,0.1),0_1px_2px_0_rgba(0,0,0,0.08)] rounded-full flex items-center p-2 max-w-3xl mx-auto',
+        className
+      )}>
+        <div className="flex-1 grid grid-cols-3 divide-x divide-border">
           <Popover>
             <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  'w-full justify-start text-left font-normal h-12',
-                  !checkIn && 'text-muted-foreground'
-                )}
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                {mounted && checkIn ? format(checkIn, 'EEE, MMM d') : 'Select date'}
-              </Button>
+              <button className="px-6 py-3 text-left hover:bg-muted rounded-full transition-colors focus:outline-none group">
+                <div className="text-xs font-bold text-foreground">Check in</div>
+                <div className="text-sm text-foreground/60 truncate">
+                  {mounted && checkIn ? format(checkIn, 'MMM d') : 'Add dates'}
+                </div>
+              </button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <CalendarComponent
                 mode="single"
                 selected={checkIn}
-                onSelect={(date) => {
-                  setCheckIn(date)
-                  if (date && checkOut && date >= checkOut) {
-                    setCheckOut(addDays(date, 1))
-                  }
-                }}
+                onSelect={setCheckIn}
                 disabled={{ before: new Date() }}
-                initialFocus
               />
             </PopoverContent>
           </Popover>
-        </div>
 
-        {/* Check-out */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Check-out
-          </label>
           <Popover>
             <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  'w-full justify-start text-left font-normal h-12',
-                  !checkOut && 'text-muted-foreground'
-                )}
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                {mounted && checkOut ? format(checkOut, 'EEE, MMM d') : 'Select date'}
-              </Button>
+              <button className="px-6 py-3 text-left hover:bg-muted rounded-full transition-colors focus:outline-none group">
+                <div className="text-xs font-bold text-foreground">Check out</div>
+                <div className="text-sm text-foreground/60 truncate">
+                  {mounted && checkOut ? format(checkOut, 'MMM d') : 'Add dates'}
+                </div>
+              </button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <CalendarComponent
@@ -233,51 +165,41 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
                 selected={checkOut}
                 onSelect={setCheckOut}
                 disabled={{ before: checkIn || new Date() }}
-                initialFocus
               />
             </PopoverContent>
           </Popover>
-        </div>
 
-        {/* Guests */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Guests
-          </label>
-          <Select value={guests} onValueChange={setGuests}>
-            <SelectTrigger className="h-12">
-              <div className="flex items-center">
-                <Users className="mr-2 h-4 w-4 text-muted-foreground" />
-                <SelectValue />
-              </div>
-            </SelectTrigger>
-            <SelectContent>
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <SelectItem key={n} value={n.toString()}>
-                  {n} {n === 1 ? 'Guest' : 'Guests'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Search Button */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground hidden md:block">
-            &nbsp;
-          </label>
-          <Button className="w-full h-12 text-base" onClick={handleSearch}>
-            <Search className="mr-2 h-4 w-4" />
-            Search Rooms
-          </Button>
+          <div className="flex items-center">
+            <Select value={guests} onValueChange={setGuests}>
+              <SelectTrigger className="border-0 focus:ring-0 rounded-full h-auto px-6 py-3 hover:bg-muted transition-colors shadow-none">
+                <div className="text-left flex-1">
+                  <div className="text-xs font-bold text-foreground">Who</div>
+                  <div className="text-sm text-foreground/60 truncate">
+                    {guests} {parseInt(guests) === 1 ? 'guest' : 'guests'}
+                  </div>
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                  <SelectItem key={n} value={n.toString()}>
+                    {n} {n === 1 ? 'Guest' : 'Guests'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Button 
+              size="icon" 
+              onClick={handleSearch}
+              className="h-12 w-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground ml-auto mr-1 flex-shrink-0"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </div>
+    )
+  }
 
-      {mounted && nights > 0 && (
-        <p className="text-sm text-muted-foreground mt-4 text-center">
-          {nights} {nights === 1 ? 'night' : 'nights'} selected
-        </p>
-      )}
-    </div>
-  )
+  return null
 }

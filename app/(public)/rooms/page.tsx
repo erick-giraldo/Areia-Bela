@@ -74,50 +74,27 @@ export default async function RoomsPage({ searchParams }: RoomsPageProps) {
   const guests = params.guests ? parseInt(params.guests) : undefined
 
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section className="bg-muted/30 py-12">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-8">
-            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-2">
-              Accommodations
-            </p>
-            <h1 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-4">
-              Our Rooms & Suites
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose from our selection of beautifully appointed rooms and suites, 
-              each designed to provide the ultimate comfort and luxury.
-            </p>
-          </div>
-
-          <BookingWidget variant="hero" />
-        </div>
-      </section>
-
-      {/* Room Listings */}
+    <div className="min-h-screen pb-20">
+      {/* Listing List */}
       <section className="py-12">
-        <div className="container px-4 md:px-6">
+        <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-xl font-semibold text-foreground">
-                {rooms.length} Room Types Available
-              </h2>
-              {guests && (
-                <p className="text-sm text-muted-foreground">
-                  Showing rooms for {guests} {guests === 1 ? 'guest' : 'guests'}
-                </p>
-              )}
-            </div>
+            <h1 className="text-2xl font-semibold text-foreground">
+              Resultados de búsqueda
+            </h1>
           </div>
 
-          <Suspense fallback={<RoomsSkeleton />}>
-            <RoomsList 
-              checkIn={params.checkIn} 
-              checkOut={params.checkOut} 
-              guests={guests}
-            />
-          </Suspense>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {rooms.map((room) => (
+              <RoomCard 
+                key={room.id} 
+                room={room}
+                checkIn={params.checkIn}
+                checkOut={params.checkOut}
+                guests={guests}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </div>

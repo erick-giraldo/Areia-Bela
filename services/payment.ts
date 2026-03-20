@@ -1,29 +1,38 @@
 import type { BookingDetails, PaymentInfo } from '@/types'
-
-// Stripe-ready placeholder functions
-// These will be replaced with actual Stripe integration
+import { stripe } from '@/lib/stripe'
 
 export interface PaymentIntent {
   id: string
-  clientSecret: string
+  clientSecret: string | null
   amount: number
   currency: string
-  status: 'requires_payment_method' | 'requires_confirmation' | 'succeeded' | 'failed'
+  status: string
 }
 
 export async function createPaymentIntent(
   bookingDetails: BookingDetails
 ): Promise<PaymentIntent> {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 800))
-  
-  // Placeholder - will be replaced with Stripe integration
-  return {
-    id: `pi_${Date.now()}`,
-    clientSecret: `pi_${Date.now()}_secret_${Math.random().toString(36).substring(7)}`,
+  // Use Stripe API to create a payment intent
+  const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(bookingDetails.totalPrice * 100), // Convert to cents
     currency: 'usd',
-    status: 'requires_payment_method',
+    automatic_payment_methods: {
+      enabled: true,
+    },
+    metadata: {
+      roomId: bookingDetails.roomId,
+      checkIn: bookingDetails.checkIn,
+      checkOut: bookingDetails.checkOut,
+      guests: bookingDetails.guests.toString(),
+    },
+  })
+  
+  return {
+    id: paymentIntent.id,
+    clientSecret: paymentIntent.client_secret,
+    amount: paymentIntent.amount,
+    currency: paymentIntent.currency,
+    status: paymentIntent.status,
   }
 }
 
@@ -31,20 +40,26 @@ export async function processBookingPayment(
   paymentIntentId: string,
   paymentInfo: PaymentInfo
 ): Promise<{ success: boolean; error?: string }> {
-  // Simulate payment processing
-  await new Promise(resolve => setTimeout(resolve, 1500))
-  
-  // Placeholder - will be replaced with Stripe integration
-  // Simulate 95% success rate
-  const success = Math.random() > 0.05
-  
-  if (success) {
-    return { success: true }
-  }
-  
-  return {
-    success: false,
-    error: 'Payment declined. Please try another payment method.',
+  // In a typical Stripe Elements flow, this is handled on the client-side.
+  // This server-side function can be used for server-side confirmation if needed.
+  try {
+    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
+      payment_method: paymentInfo.paymentMethodId,
+    })
+    
+    if (paymentIntent.status === 'succeeded') {
+      return { success: true }
+    } else {
+      return { 
+        success: false, 
+        error: `Payment failed with status: ${paymentIntent.status}` 
+      }
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Payment processing error.',
+    }
   }
 }
 
@@ -52,16 +67,25 @@ export async function refundPayment(
   paymentIntentId: string,
   amount?: number
 ): Promise<{ success: boolean; refundId?: string; error?: string }> {
-  // Simulate refund processing
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  return {
-    success: true,
-    refundId: `re_${Date.now()}`,
+  try {
+    const refund = await stripe.refunds.create({
+      payment_intent: paymentIntentId,
+      amount: amount ? Math.round(amount * 100) : undefined,
+    })
+    
+    return {
+      success: true,
+      refundId: refund.id,
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Refund processing error.',
+    }
   }
 }
 
 export async function getPaymentMethods(): Promise<string[]> {
-  // Available payment methods
-  return ['credit-card', 'apple-pay', 'google-pay', 'paypal']
+  // Available payment methods in Stripe
+  return ['card', 'apple_pay', 'google_pay', 'link']
 }

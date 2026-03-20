@@ -67,20 +67,15 @@ export const propertyInfo: PropertyInfo = {
 export const rooms: Room[] = [
   {
     id: '1489399156507737323',
-    type: 'luxury-suite',
+    type: 'casa',
     name: 'Areia Bela Casa',
     description: 'Welcome to Areia Bela, just 5 minutes from Madeira Beach! This newly renovated 3-bedroom, 2-bathroom casa blends comfort and style. Features private heated pool, smart toilet, BBQ, and coffee bar.',
-    capacity: 6,
-    beds: '3 Bedrooms',
+    capacity: 8,
+    beds: '3 Bedrooms · 5 Beds',
     size: 150,
-    amenities: ['WiFi', 'Air Conditioning', 'Flat Screen TV', 'Heated Pool', 'BBQ', 'Coffee Maker', 'Washer & Dryer', 'Free Parking', 'Pet Friendly'],
-    images: [
-      'https://a0.muscache.com/im/pictures/hosting/Hosting-1489399156507737323/original/98aecab8-e3cb-4551-9aa1-cefd97509e25.jpeg?im_w=1200',
-      'https://a0.muscache.com/im/pictures/hosting/Hosting-1489399156507737323/original/5696cae3-765d-4cc2-b46e-92c08da414a5.jpeg?im_w=1200',
-      'https://a0.muscache.com/im/pictures/hosting/Hosting-1489399156507737323/original/8f01cfd9-ab26-4be8-87c0-fe49a7ebc23b.jpeg?im_w=1200',
-      'https://a0.muscache.com/im/pictures/hosting/Hosting-1489399156507737323/original/36ac1e34-a959-494b-a691-a278367aa1a9.jpeg?im_w=1200',
-    ],
-    basePrice: 250,
+    amenities: ['WiFi', 'Air Conditioning', 'Flat Screen TV', 'Heated Pool', 'BBQ', 'Coffee Maker', 'Washer & Dryer', 'Free Parking', 'Pet Friendly', 'Smart Toilet', 'Beach Essentials'],
+    images: listingDetail.photos.map(p => p.large),
+    basePrice: 311.92, // Based on the user's provided link price
     inventory: 1,
   }
 ]

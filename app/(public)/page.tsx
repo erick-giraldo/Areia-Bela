@@ -1,43 +1,59 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, Award, User, Waves, Key, MapPin, Wind, Cat, Calendar, ChevronRight } from 'lucide-react'
+import { Star, Award, User, Waves, Key, MapPin, Wind, Cat, Calendar, ChevronRight, Wifi, Tv, Coffee, Bath, Trash, Utensils, ShieldCheck, DoorOpen, Clock, Info, Shield, Heart, Flag, Share, Languages, CheckCircle2, Bed } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { BookingWidget } from '@/components/booking/booking-widget'
 import { ImageGallery } from '@/components/rooms/image-gallery'
 import { reviews, propertyInfo } from '@/lib/mock-data'
+import { listingDetail, listingPhotos } from '@/lib/listing-data'
 
 export default function HomePage() {
+  const host = listingDetail.primaryHost
+  
   return (
     <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-10 py-6 mb-12">
       {/* Listing Header */}
-      <div className="mb-6">
-        <h1 className="text-[26px] sm:text-[28px] font-semibold text-foreground mb-2">
-          {propertyInfo.name}
-        </h1>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-foreground">
-          <div className="flex items-center gap-1 font-semibold">
-            <Star className="h-4 w-4 fill-foreground" />
-            <span>4.9</span>
-            <span>·</span>
-            <Link href="#reviews" className="underline hover:opacity-80">
-              {reviews.length} reviews
-            </Link>
+      <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <h1 className="text-[26px] sm:text-[28px] font-semibold text-foreground mb-2">
+            {listingDetail.name}
+          </h1>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-foreground">
+            <div className="flex items-center gap-1 font-semibold">
+              <Star className="h-4 w-4 fill-foreground" />
+              <span>4.9</span>
+              <span>·</span>
+              <Link href="#reviews" className="underline hover:opacity-80">
+                {reviews.length} reviews
+              </Link>
+            </div>
+            {host.isSuperhost && (
+              <div className="flex items-center gap-1">
+                <Award className="h-4 w-4" />
+                <span>Superhost</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1 font-semibold underline hover:opacity-80 cursor-pointer">
+              <Link href="#location">
+                {listingDetail.city}, {listingDetail.country}
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Award className="h-4 w-4" />
-            <span>Superhost</span>
-          </div>
-          <div className="flex items-center gap-1 font-semibold underline hover:opacity-80 cursor-pointer">
-            <Link href="#location">
-              {propertyInfo.city}, Florida, United States
-            </Link>
-          </div>
+        </div>
+        
+        <div className="flex items-center gap-4 text-sm font-semibold underline">
+          <button className="flex items-center gap-2 hover:bg-muted p-2 rounded-lg transition-colors">
+            <Share className="h-4 w-4" /> Share
+          </button>
+          <button className="flex items-center gap-2 hover:bg-muted p-2 rounded-lg transition-colors">
+            <Heart className="h-4 w-4" /> Save
+          </button>
         </div>
       </div>
 
       {/* Image Gallery */}
       <div className="mb-10 lg:mb-12">
-        <ImageGallery images={propertyInfo.images} title={propertyInfo.name} />
+        <ImageGallery images={listingDetail.photos.map(p => p.large)} title={listingDetail.name} />
       </div>
 
       {/* Main Content Layout */}
@@ -49,14 +65,19 @@ export default function HomePage() {
           <div className="flex justify-between items-start pb-6 border-b border-border">
             <div>
               <h2 className="text-[22px] font-semibold text-foreground mb-1">
-                Entire casa hosted by Areia Bela
+                {listingDetail.roomType} anfitrión: {host.firstName}
               </h2>
               <p className="text-foreground/90">
-                6 guests · 3 bedrooms · 4 beds · 2 baths
+                {listingDetail.numberOfGuests} huéspedes · {listingDetail.bedroomLabel} · {listingDetail.bedLabel} · {listingDetail.bathroomLabel}
               </p>
             </div>
-            <div className="h-12 w-12 md:h-14 md:w-14 rounded-full overflow-hidden bg-muted ml-4 flex-shrink-0 relative">
-              <User className="absolute inset-0 m-auto h-7 w-7 md:h-8 md:w-8 text-muted-foreground" />
+            <div className="h-14 w-14 rounded-full overflow-hidden bg-muted ml-4 flex-shrink-0 relative border border-border">
+              <Image 
+                src={host.pictureUrl} 
+                alt={host.firstName} 
+                fill 
+                className="object-cover"
+              />
             </div>
           </div>
 
@@ -70,10 +91,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex gap-4 items-start">
-              <Key className="h-7 w-7 flex-shrink-0 mt-0.5 text-foreground" />
+              <DoorOpen className="h-7 w-7 flex-shrink-0 mt-0.5 text-foreground" />
               <div>
                 <h3 className="font-semibold text-foreground text-base">Self check-in</h3>
-                <p className="text-foreground/70 text-sm">Check yourself in with the smartlock.</p>
+                <p className="text-foreground/70 text-sm">{listingDetail.houseRulesModule?.selfCheckinInfo ?? 'Check yourself in with the smartlock.'}</p>
               </div>
             </div>
             <div className="flex gap-4 items-start">
@@ -85,10 +106,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* AirCover Badge (Simulated) */}
+          {/* AirCover Badge */}
           <div className="py-8 border-b border-border">
-            <div className="text-[28px] font-bold text-primary tracking-tighter mb-4 flex">
-              <span className="text-foreground">air</span>cover
+            <div className="text-[28px] font-bold tracking-tighter mb-4 flex">
+              <span className="text-primary">air</span>cover
             </div>
             <p className="text-foreground/80 leading-relaxed mb-4">
               Every booking includes free protection from Host cancellations, listing inaccuracies, and other issues like trouble checking in.
@@ -100,32 +121,158 @@ export default function HomePage() {
 
           {/* Description Content */}
           <div className="py-8 border-b border-border">
-            <p className="text-foreground/80 leading-relaxed whitespace-pre-wrap">
-              {propertyInfo.description}
+            <p className="text-foreground/80 leading-relaxed whitespace-pre-wrap line-clamp-6">
+              {listingDetail.sectionedDescription.summary}
+              {"\n\n"}
+              {listingDetail.sectionedDescription.space}
             </p>
             <Button variant="link" className="px-0 font-semibold underline underline-offset-4 text-foreground mt-4 flex items-center">
               Show more <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
 
+          {/* Where you'll sleep */}
+          <div className="py-12 border-b border-border">
+            <h2 className="text-[22px] font-semibold text-foreground mb-6">Where you'll sleep</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="relative aspect-[3/2] rounded-xl overflow-hidden border border-border">
+                  <Image src={listingPhotos[11]?.large || listingDetail.photos[0].large} alt="Bedroom 1" fill className="object-cover" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Bedroom 1</h3>
+                  <p className="text-sm text-foreground/70">1 queen bed</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="relative aspect-[3/2] rounded-xl overflow-hidden border border-border">
+                  <Image src={listingPhotos[12]?.large || listingDetail.photos[0].large} alt="Bedroom 2" fill className="object-cover" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Bedroom 2</h3>
+                  <p className="text-sm text-foreground/70">1 queen bed</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="relative aspect-[3/2] rounded-xl overflow-hidden border border-border">
+                  <Image src={listingPhotos[14]?.large || listingDetail.photos[0].large} alt="Bedroom 3" fill className="object-cover" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Bedroom 3</h3>
+                  <p className="text-sm text-foreground/70">1 bunk bed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Amenities Summary */}
           <div className="py-12 border-b border-border">
             <h2 className="text-[22px] font-semibold text-foreground mb-6">What this place offers</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-              {propertyInfo.amenities.slice(0, 8).map((amenity, index) => (
+              {listingDetail.amenities.slice(0, 10).map((amenity) => (
                 <div key={amenity} className="flex items-center gap-4 text-foreground/90">
-                  {/* Pseudo-randomizing icons for visual fidelity */}
-                  {index % 4 === 0 && <Waves className="h-6 w-6 text-foreground/80" />}
-                  {index % 4 === 1 && <Wind className="h-6 w-6 text-foreground/80" />}
-                  {index % 4 === 2 && <Cat className="h-6 w-6 text-foreground/80" />}
-                  {index % 4 === 3 && <User className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('piscina') && <Waves className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('wifi') && <Wifi className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('tv') && <Tv className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('cocina') && <Utensils className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('cafetera') && <Coffee className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('aire acondicionado') && <Wind className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('mascotas') && <Cat className="h-6 w-6 text-foreground/80" />}
+                  {amenity.toLowerCase().includes('bañera') && <Bath className="h-6 w-6 text-foreground/80" />}
+                  {!['piscina', 'wifi', 'tv', 'cocina', 'cafetera', 'aire', 'mascotas', 'bañera'].some(kw => amenity.toLowerCase().includes(kw)) && 
+                    <ShieldCheck className="h-6 w-6 text-foreground/80" />
+                  }
                   <span className="text-base">{amenity}</span>
                 </div>
               ))}
             </div>
-            <Button variant="outline" className="mt-8 px-6 py-6 font-semibold rounded-xl text-base w-full sm:w-auto h-auto border-foreground hover:bg-muted">
-              Show all 10 amenities
+            <Button variant="outline" className="mt-8 px-6 py-3 font-semibold rounded-xl text-base w-full sm:w-auto h-auto border-foreground hover:bg-muted">
+              Show all {listingDetail.amenities.length} amenities
             </Button>
+          </div>
+
+          {/* Meet your host */}
+          <div className="py-12 border-b border-border">
+            <h2 className="text-[22px] font-semibold text-foreground mb-6">Meet your host</h2>
+            <div className="bg-muted/30 rounded-3xl p-8 flex flex-col items-center text-center md:items-start md:text-left md:flex-row gap-8">
+              <div className="flex flex-col items-center bg-background p-6 rounded-3xl shadow-sm border border-border min-w-[240px]">
+                <div className="relative h-24 w-24 rounded-full overflow-hidden mb-4">
+                  <Image src={host.pictureUrl} alt={host.firstName} fill className="object-cover" />
+                </div>
+                <h3 className="text-2xl font-bold">{host.firstName}</h3>
+                <div className="flex items-center gap-1 font-semibold text-sm mb-1">
+                  <Award className="h-4 w-4" /> Superhost
+                </div>
+                <div className="text-sm text-foreground/70">
+                  {host.hostIntroTags?.join(' · ') || '10 reviews'}
+                </div>
+              </div>
+              
+              <div className="flex-1 space-y-4">
+                <div className="flex flex-wrap gap-4 text-sm font-semibold">
+                   <div className="flex items-center gap-2"><Star className="h-4 w-4" /> 10 Reviews</div>
+                   <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4" /> Identity verified</div>
+                   <div className="flex items-center gap-2"><Award className="h-4 w-4" /> Superhost</div>
+                </div>
+                <p className="text-foreground/80 leading-relaxed italic">
+                  "{host.about}"
+                </p>
+                <div className="pt-4 flex flex-col gap-2 text-sm">
+                  <div className="font-bold text-base">Co-hosts</div>
+                  <div className="flex gap-2">
+                    {listingDetail.additionalHosts.map(cohost => (
+                      <div key={cohost.id} className="h-8 w-8 rounded-full overflow-hidden relative border border-background">
+                        <Image src={cohost.pictureUrl} alt={cohost.firstName} fill className="object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Button className="mt-4 px-8 py-4 rounded-xl font-bold text-base h-auto">Message Host</Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Things to know */}
+          <div className="py-12">
+            <h2 className="text-[22px] font-semibold text-foreground mb-8">Things to know</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-base">House rules</h3>
+                <div className="space-y-3 text-foreground/80">
+                  <div className="flex gap-3"><Clock className="h-4 w-4" /> Check-in: {listingDetail.checkInTime}</div>
+                  <div className="flex gap-3"><Clock className="h-4 w-4" /> Check-out: {listingDetail.checkOutTime}</div>
+                  <div className="flex gap-3"><User className="h-4 w-4" /> 8 guests maximum</div>
+                  <div className="flex gap-3"><Cat className="h-4 w-4" /> Pets allowed</div>
+                </div>
+                <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+                  Show more <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="font-semibold text-base">Safety & property</h3>
+                <div className="space-y-3 text-foreground/80">
+                  <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Smoke alarm</div>
+                  <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Carbon monoxide alarm</div>
+                  <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Fire extinguisher</div>
+                  <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> First aid kit</div>
+                </div>
+                <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+                  Show more <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-semibold text-base">Cancellation policy</h3>
+                <div className="space-y-3 text-foreground/80">
+                  <p className="font-semibold">Free cancellation for 48 hours.</p>
+                  <p>Review the Host's full cancellation policy which applies even if you cancel for illness or other issues like trouble checking in.</p>
+                </div>
+                <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+                  Show more <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -135,7 +282,7 @@ export default function HomePage() {
             {/* The BookingWidget wrapper will use Shadcn components natively. We add shadow for pop. */}
             <div className="bg-background border border-border rounded-xl shadow-[0_6px_16px_rgba(0,0,0,0.12)] p-6 block">
               <div className="mb-6 flex items-baseline gap-1">
-                <span className="text-[22px] font-semibold text-foreground">$150</span>
+                <span className="text-[22px] font-semibold text-foreground">$250</span>
                 <span className="text-foreground/80">night</span>
               </div>
               <BookingWidget variant="compact" className="flex flex-col gap-4 [&>div]:w-full [&>button]:w-full" />
@@ -143,25 +290,34 @@ export default function HomePage() {
                 You won't be charged yet
               </div>
               
-              <div className="mt-6 space-y-4 border-b border-border pb-6">
+              <div className="mt-6 space-y-4 border-b border-border pb-6 text-sm">
                 <div className="flex justify-between text-foreground/90 underline">
-                  <span>$150 x 3 nights</span>
-                  <span>$450</span>
+                  <span>$250 x 5 nights</span>
+                  <span>$1,250</span>
                 </div>
                 <div className="flex justify-between text-foreground/90 underline">
                   <span>Cleaning fee</span>
-                  <span>$120</span>
+                  <span>$150</span>
                 </div>
                 <div className="flex justify-between text-foreground/90 underline">
-                  <span>Airbnb service fee</span>
-                  <span>$80</span>
+                  <span>Service fee</span>
+                  <span>$198</span>
                 </div>
               </div>
               
               <div className="flex justify-between text-foreground font-semibold pt-6 text-lg">
                 <span>Total before taxes</span>
-                <span>$650</span>
+                <span>$1,598</span>
               </div>
+            </div>
+
+            {/* Rare Find / Good Value Badge (Optional Airbnb style) */}
+            <div className="mt-6 p-4 border border-border rounded-xl flex items-center gap-4">
+               <div className="flex flex-col">
+                  <span className="font-semibold text-base">This is a rare find</span>
+                  <span className="text-sm text-foreground/70">{host.firstName}'s place is usually fully booked.</span>
+               </div>
+               <Award className="h-10 w-10 text-primary/80" />
             </div>
           </div>
         </div>
@@ -176,7 +332,7 @@ export default function HomePage() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
-          {reviews.map((review) => (
+          {reviews.slice(0, 6).map((review) => (
             <div key={review.id} className="w-full">
               <div className="flex items-center gap-4 mb-4">
                 {review.guestAvatar ? (
@@ -195,7 +351,7 @@ export default function HomePage() {
                 <div>
                   <h3 className="font-semibold text-foreground text-base">{review.guestName}</h3>
                   <div className="text-sm text-foreground/70 flex items-center gap-1">
-                    <span>{review.rating >= 4 ? `${review.rating} years on Airbnb` : 'Joined 2024'}</span>
+                    <span>{review.localizedDate || 'Stayed a few nights'}</span>
                   </div>
                 </div>
               </div>
@@ -212,22 +368,20 @@ export default function HomePage() {
                     />
                   ))}
                 </div>
-                <span className="text-foreground/50">·</span>
-                <span className="font-semibold text-foreground/80">{review.rating >= 4.5 ? '2 weeks ago' : '1 month ago'}</span>
-                <span className="text-foreground/50">·</span>
-                <span className="text-foreground/80">Stayed a few nights</span>
               </div>
               
               <p className="text-foreground/90 leading-relaxed mb-3 line-clamp-4">
                 {review.comment}
               </p>
-              <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity">
-                Show more
-              </Button>
+              {review.comment.length > 150 && (
+                <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity">
+                  Show more
+                </Button>
+              )}
             </div>
           ))}
         </div>
-        <Button variant="outline" className="mt-8 px-6 py-6 font-semibold rounded-xl text-base h-auto border-foreground hover:bg-muted">
+        <Button variant="outline" className="mt-12 px-6 py-3 font-semibold rounded-xl text-base h-auto border-foreground hover:bg-muted">
           Show all {reviews.length} reviews
         </Button>
       </section>
@@ -238,7 +392,7 @@ export default function HomePage() {
           <h2 className="font-serif text-[26px] font-semibold text-foreground">
             Where you'll be
           </h2>
-          <p className="text-foreground/80 mt-1">St. Petersburg, Florida, United States</p>
+          <p className="text-foreground/80 mt-1">{listingDetail.city}, {listingDetail.country}</p>
         </div>
         
         <div className="group relative w-full h-[350px] md:h-[500px] rounded-3xl overflow-hidden shadow-sm mb-8">
@@ -258,11 +412,10 @@ export default function HomePage() {
         <div className="flex flex-col md:flex-row gap-8 justify-between">
           <div className="max-w-2xl">
             <h3 className="font-semibold text-foreground mb-3 text-lg">
-              Areia Bela, Madeira Beach, Florida
+              {listingDetail.name}
             </h3>
             <p className="text-foreground/80 leading-relaxed text-base">
-              The property is ideally located just a 5-minute walk from the stunning white sands of Madeira Beach. 
-              You'll be close to local shops, waterfront dining, and the famous John's Pass Village & Boardwalk.
+              {listingDetail.sectionedDescription.neighborhoodOverview}
             </p>
             <div className="mt-4">
               <Button variant="link" className="px-0 h-auto font-semibold text-foreground underline underline-offset-4 hover:opacity-80 transition-opacity flex items-center" asChild>
@@ -292,14 +445,57 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Things to know */}
+      <section className="py-12 mb-20">
+        <h2 className="text-[22px] font-semibold text-foreground mb-8">Things to know</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-base">House rules</h3>
+            <div className="space-y-3 text-foreground/80">
+              <div className="flex gap-3"><Clock className="h-4 w-4" /> Check-in: {listingDetail.checkInTime}</div>
+              <div className="flex gap-3"><Clock className="h-4 w-4" /> Check-out: {listingDetail.checkOutTime}</div>
+              <div className="flex gap-3"><User className="h-4 w-4" /> 8 guests maximum</div>
+              <div className="flex gap-3"><Cat className="h-4 w-4" /> Pets allowed</div>
+            </div>
+            <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+              Show more <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+          
+          <div className="space-y-4">
+            <h3 className="font-semibold text-base">Safety & property</h3>
+            <div className="space-y-3 text-foreground/80">
+              <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Smoke alarm</div>
+              <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Carbon monoxide alarm</div>
+              <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> Fire extinguisher</div>
+              <div className="flex gap-3"><ShieldCheck className="h-4 w-4" /> First aid kit</div>
+            </div>
+            <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+              Show more <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-base">Cancellation policy</h3>
+            <div className="space-y-3 text-foreground/80">
+              <p>Free cancellation for 48 hours.</p>
+              <p>Review the Host's full cancellation policy which applies even if you cancel for illness or other issues like trouble checking in.</p>
+            </div>
+            <Button variant="link" className="px-0 font-semibold underline text-foreground flex items-center h-auto">
+              Show more <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      </section>
       
       {/* Mobile Sticky Booking Footer */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 flex justify-between items-center z-40">
         <div>
           <div className="font-semibold text-foreground text-lg flex items-center gap-1">
-             $150 <span className="text-sm font-normal text-foreground/80">night</span>
+             $250 <span className="text-sm font-normal text-foreground/80">night</span>
           </div>
-          <p className="text-xs text-foreground/80 underline font-medium">Oct 12 - 17</p>
+          <p className="text-xs text-foreground/80 underline font-medium">Add dates</p>
         </div>
         <Button className="w-1/2 rounded-lg font-semibold text-base py-6">
           Reserve

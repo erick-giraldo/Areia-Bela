@@ -1,130 +1,71 @@
 import Link from 'next/link'
-import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from 'lucide-react'
-
-const footerLinks = {
-  explore: [
-    { name: 'La casa', href: '/rooms' },
-    { name: 'Ofertas', href: '/offers' },
-    { name: 'Reseñas', href: '/reviews' },
-    { name: 'Sobre nosotros', href: '/about' },
-  ],
-  support: [
-    { name: 'Contacto', href: '/contact' },
-    { name: 'Preguntas frecuentes', href: '/faq' },
-    { name: 'Privacidad', href: '#' },
-    { name: 'Términos', href: '#' },
-  ],
-}
-
-const socialLinks = [
-  { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/areiabelastpete/' },
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
-]
+import { Globe, Facebook, Instagram, Twitter } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background">
-      <div className="container px-4 md:px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <div className="flex flex-col mb-6">
-              <span className="font-serif text-2xl font-semibold tracking-tight">
-                Areia Bela
-              </span>
-              <span className="text-xs uppercase tracking-[0.2em] text-background/60">
-                St. Petersburg, Florida
-              </span>
-            </div>
-            <p className="text-background/70 text-sm leading-relaxed mb-6 max-w-sm">
-              Casa de vacaciones a 5 min de Madeira Beach. Piscina climatizada, bar de café, 
-              cocina equipada y WiFi. Ideal para familias y grupos.
-            </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-background/20 transition-colors"
-                  aria-label={social.name}
-                >
-                  <social.icon className="h-5 w-5" />
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Explore */}
+    <footer className="bg-[#F7F7F7] border-t border-border py-12">
+      <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-border">
           <div>
-            <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider">
-              Explorar
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.explore.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-background/70 hover:text-background transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+            <h3 className="font-semibold text-sm mb-4">Asistencia</h3>
+            <ul className="space-y-3 text-sm text-foreground/80">
+              <li><Link href="#" className="hover:underline">Centro de ayuda</Link></li>
+              <li><Link href="#" className="hover:underline">AirCover</Link></li>
+              <li><Link href="#" className="hover:underline">Antidiscriminación</Link></li>
+              <li><Link href="#" className="hover:underline">Apoyo a personas con discapacidad</Link></li>
+              <li><Link href="#" className="hover:underline">Opciones de cancelación</Link></li>
+              <li><Link href="#" className="hover:underline">Problemas en el vecindario</Link></li>
             </ul>
           </div>
-
-          {/* Contact */}
           <div>
-            <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider">
-              Contacto
-            </h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-background/70" />
-                <span className="text-sm text-background/70">
-                  St. Petersburg, Florida<br />
-                  Estados Unidos
-                </span>
-              </li>
-              <li>
-                <Link 
-                  href="tel:+15551234567"
-                  className="flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
-                >
-                  <Phone className="h-4 w-4 flex-shrink-0" />
-                  +1 (555) 987-6543
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="mailto:host@areiabela.com"
-                  className="flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
-                >
-                  <Mail className="h-4 w-4 flex-shrink-0" />
-                  host@areiabela.com
-                </Link>
-              </li>
+            <h3 className="font-semibold text-sm mb-4">Modo anfitrión</h3>
+            <ul className="space-y-3 text-sm text-foreground/80">
+              <li><Link href="#" className="hover:underline">Pon tu espacio en Airbnb</Link></li>
+              <li><Link href="#" className="hover:underline">AirCover para anfitriones</Link></li>
+              <li><Link href="#" className="hover:underline">Recursos para anfitriones</Link></li>
+              <li><Link href="#" className="hover:underline">Foro de la comunidad</Link></li>
+              <li><Link href="#" className="hover:underline">Anfitrión responsable</Link></li>
+              <li><Link href="#" className="hover:underline">Súmate a un alojamiento gratuito</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm mb-4">Airbnb</h3>
+            <ul className="space-y-3 text-sm text-foreground/80">
+              <li><Link href="#" className="hover:underline">Sala de prensa</Link></li>
+              <li><Link href="#" className="hover:underline">Funciones nuevas</Link></li>
+              <li><Link href="#" className="hover:underline">Carreras</Link></li>
+              <li><Link href="#" className="hover:underline">Inversionistas</Link></li>
+              <li><Link href="#" className="hover:underline">Alojamientos en Airbnb.org</Link></li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-background/10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-background/50">
-              &copy; {new Date().getFullYear()} Areia Bela. Todos los derechos reservados.
-            </p>
-            <div className="flex gap-6">
-              {footerLinks.support.slice(2).map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm text-background/50 hover:text-background/70 transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-foreground/80">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1">
+            <span>© {new Date().getFullYear()} areiabela, Inc.</span>
+            <span>·</span>
+            <Link href="#" className="hover:underline">Privacidad</Link>
+            <span>·</span>
+            <Link href="#" className="hover:underline">Términos</Link>
+            <span>·</span>
+            <Link href="#" className="hover:underline">Mapa del sitio</Link>
+            <span>·</span>
+            <Link href="#" className="hover:underline">Datos de la empresa</Link>
+          </div>
+          
+          <div className="flex items-center gap-6 font-semibold">
+            <div className="flex items-center gap-2 cursor-pointer hover:underline">
+              <Globe className="h-4 w-4" />
+              <span>Español (ES)</span>
+            </div>
+            <div className="flex items-center gap-2 cursor-pointer hover:underline">
+              <span>$</span>
+              <span>USD</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="#" aria-label="Facebook"><Facebook className="h-4 w-4 fill-current" /></Link>
+              <Link href="#" aria-label="Twitter"><Twitter className="h-4 w-4 fill-current" /></Link>
+              <Link href="#" aria-label="Instagram"><Instagram className="h-4 w-4" /></Link>
             </div>
           </div>
         </div>
