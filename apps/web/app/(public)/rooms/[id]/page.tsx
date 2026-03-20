@@ -60,11 +60,11 @@ export default async function RoomDetailPage({ params, searchParams }: RoomDetai
       {/* Back Button */}
       <div className="container px-4 md:px-6 py-4">
         <Link 
-          href="/rooms" 
+          href="/" 
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ChevronLeft className="h-4 w-4 mr-1" />
-          Back to All Rooms
+          Back to Home
         </Link>
       </div>
 

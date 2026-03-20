@@ -265,11 +265,8 @@ export interface GuestInfo {
 }
 
 export interface PaymentInfo {
-  method: 'credit-card' | 'apple-pay' | 'google-pay' | 'paypal'
-  cardNumber?: string
-  expiryDate?: string
-  cvv?: string
-  cardholderName?: string
+  method: 'stripe'
+  sessionId?: string
 }
 
 export interface AdminRoom {

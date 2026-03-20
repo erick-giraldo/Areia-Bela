@@ -1,19 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Check, Waves, Utensils, Dumbbell, Sparkles, Car, Wifi, Clock, Umbrella } from 'lucide-react'
+import { ArrowRight, Check, Waves, Utensils, Sparkles, Car, Wifi, Clock, Umbrella, Coffee } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { propertyInfo } from '@/lib/mock-data'
 
 const amenities = [
-  { icon: Waves, name: 'Infinity Pool', description: 'Stunning ocean-view infinity pool' },
-  { icon: Umbrella, name: 'Private Beach', description: 'Exclusive access to pristine beach' },
-  { icon: Sparkles, name: 'Spa & Wellness', description: 'Full-service spa with treatments' },
-  { icon: Utensils, name: 'Fine Dining', description: 'Award-winning restaurant & bar' },
-  { icon: Dumbbell, name: 'Fitness Center', description: '24/7 state-of-the-art gym' },
-  { icon: Car, name: 'Valet Parking', description: 'Complimentary valet service' },
-  { icon: Wifi, name: 'High-Speed WiFi', description: 'Free WiFi throughout property' },
-  { icon: Clock, name: '24/7 Concierge', description: 'Round-the-clock assistance' },
+  { icon: Waves, name: 'Heated Pool', description: 'Private heated pool for year-round enjoyment' },
+  { icon: Umbrella, name: 'Beach Gear', description: 'Towels, chairs, umbrellas, and beach stroller provided' },
+  { icon: Sparkles, name: 'Smart Home', description: 'Smart toilet, keypad entry, and high-tech amenities' },
+  { icon: Coffee, name: 'Coffee Bar', description: 'Full coffee bar with Keurig and premium selections' },
+  { icon: Utensils, name: 'Full Kitchen', description: 'Fully stocked kitchen for all your culinary needs' },
+  { icon: Car, name: 'Free Parking', description: 'Complimentary on-site driveway and street parking' },
+  { icon: Wifi, name: 'High-Speed WiFi', description: 'Unlimited high-speed WiFi throughout the house' },
+  { icon: Clock, name: 'Host Support', description: 'Responsive and dedicated host assistance' },
 ]
 
 export default function AboutPage() {
@@ -59,9 +59,9 @@ export default function AboutPage() {
                 {propertyInfo.description}
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Our commitment to excellence has earned us recognition as one of the top luxury resorts 
-                in the region. From our meticulously designed rooms to our world-class amenities, 
-                every detail has been crafted to exceed your expectations.
+                Our commitment to guest satisfaction has earned us glowing reviews from families and groups alike. 
+                From our private heated pool to our thoughtful in-home features, every detail has been 
+                curated to provide the ultimate vacation experience.
               </p>
               <div className="space-y-3">
                 {propertyInfo.policies.map((policy) => (
@@ -166,9 +166,9 @@ export default function AboutPage() {
             Book your stay today with a fast, modern checkout experience.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/rooms">
+            <Link href="/rooms/1489399156507737323">
               <Button size="lg" variant="secondary">
-                View Our Rooms
+                Book Now
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

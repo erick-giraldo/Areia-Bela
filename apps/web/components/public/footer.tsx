@@ -4,7 +4,7 @@ import { propertyInfo } from '@/lib/mock-data'
 
 const footerLinks = {
   explore: [
-    { name: 'Our Rooms', href: '/rooms' },
+    { name: 'Book Now', href: '/rooms/1489399156507737323' },
     { name: 'Special Offers', href: '/offers' },
     { name: 'Guest Reviews', href: '/reviews' },
     { name: 'About Us', href: '/about' },

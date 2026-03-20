@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '@/components/ui/sheet'
 
 const navigation = [
-  { name: 'Rooms', href: '/rooms' },
   { name: 'Amenities', href: '/about#amenities' },
   { name: 'Offers', href: '/offers' },
   { name: 'Reviews', href: '/reviews' },
@@ -28,7 +27,7 @@ export function Header() {
               Areia Bela
             </span>
             <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              Resort & Spa
+              Vacation Rental
             </span>
           </div>
         </Link>
@@ -61,7 +60,7 @@ export function Header() {
               Admin
             </Button>
           </Link>
-          <Link href="/rooms">
+          <Link href="/rooms/1489399156507737323">
             <Button size="sm">
               Book Now
             </Button>
@@ -82,7 +81,7 @@ export function Header() {
                 Areia Bela
               </SheetTitle>
               <SheetDescription className="text-[10px] uppercase tracking-[0.2em]">
-                Resort &amp; Spa
+                Vacation Rental
               </SheetDescription>
             </SheetHeader>
 
@@ -114,7 +113,7 @@ export function Header() {
                     Admin Portal
                   </Button>
                 </Link>
-                <Link href="/rooms" onClick={() => setIsOpen(false)}>
+                <Link href="/rooms/1489399156507737323" onClick={() => setIsOpen(false)}>
                   <Button className="w-full">
                     Book Now
                   </Button>
