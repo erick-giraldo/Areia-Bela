@@ -223,6 +223,19 @@ export interface Review {
   createdAt: string
 }
 
+// Host Info Types
+export interface HostInfo {
+  name: string
+  about: string
+  pictureUrl: string
+  isSuperhost: boolean
+  responseRate: string
+  responseTime: string
+  memberSince: string
+  languages: string[]
+  reviewsCount: number
+}
+
 // Property Types
 export interface PropertyInfo {
   name: string
@@ -238,6 +251,21 @@ export interface PropertyInfo {
   amenities: string[]
   policies: string[]
   images: string[]
+  location: {
+    lat: number
+    lng: number
+  }
+  pricePerNight: number
+  weekendPrice: number
+  cleaningFee: number
+  serviceFeePercent: number
+  taxPercent: number
+  heatedPoolFee: number
+  maxGuests: number
+  bedrooms: number
+  beds: number
+  bathrooms: number
+  host: HostInfo
 }
 
 // Booking Types for Frontend
