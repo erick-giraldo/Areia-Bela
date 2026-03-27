@@ -106,8 +106,9 @@ function getCleaningFee(roomType: RoomType): number {
     'family-suite': 60,
     'luxury-suite': 75,
     'penthouse': 100,
+    'casa': 75,
   }
-  return fees[roomType] || 25
+  return fees[roomType] ?? 25
 }
 
 export function getSeasonalPricing(): SeasonalPricing[] {

@@ -14,20 +14,20 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Grand Azure Resort | Luxury Beachfront Hotel',
-  description: 'Experience luxury at Grand Azure Resort. World-class amenities, stunning ocean views, and impeccable service await you at our premier beachfront property.',
-  keywords: ['luxury hotel', 'beachfront resort', 'Miami Beach', 'vacation', 'spa', 'ocean view'],
+  title: 'Areia Bela | Book direct',
+  description: 'Book your stay at Areia Bela. Modern amenities, fast booking, and a professional host experience.',
+  keywords: ['vacation rental', 'booking', 'stays', 'property', 'hospitality', 'pms'],
   openGraph: {
-    title: 'Grand Azure Resort | Luxury Beachfront Hotel',
-    description: 'Experience luxury at Grand Azure Resort with stunning ocean views and world-class amenities.',
+    title: 'Areia Bela | Book direct',
+    description: 'Book your stay at Areia Bela with a modern booking experience.',
     type: 'website',
     locale: 'en_US',
-    siteName: 'Grand Azure Resort',
+    siteName: 'Areia Bela',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Grand Azure Resort | Luxury Beachfront Hotel',
-    description: 'Experience luxury at Grand Azure Resort with stunning ocean views and world-class amenities.',
+    title: 'Areia Bela | Book direct',
+    description: 'Book your stay at Areia Bela with a modern booking experience.',
   },
   icons: {
     icon: [

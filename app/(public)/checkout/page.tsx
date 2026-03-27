@@ -8,28 +8,19 @@ import Link from 'next/link'
 import { format, differenceInDays } from 'date-fns'
 import { 
   ChevronLeft, 
-  CreditCard, 
   Lock, 
   Calendar, 
-  Users,
-  Check
+  Users
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
 import { rooms } from '@/lib/mock-data'
 import { calculatePrice } from '@/services/pricing'
-
-const paymentMethods = [
-  { id: 'credit-card', name: 'Credit Card', icon: '/payments/card.svg' },
-  { id: 'apple-pay', name: 'Apple Pay', icon: '/payments/apple-pay.svg' },
-  { id: 'google-pay', name: 'Google Pay', icon: '/payments/google-pay.svg' },
-  { id: 'paypal', name: 'PayPal', icon: '/payments/paypal.svg' },
-]
+import { createCheckoutSession } from '@/services/payment'
 
 function CheckoutForm() {
   const router = useRouter()
@@ -45,7 +36,6 @@ function CheckoutForm() {
   const guests = guestsParam ? parseInt(guestsParam) : 2
   
   const [isLoading, setIsLoading] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState('credit-card')
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -53,10 +43,6 @@ function CheckoutForm() {
     phone: '',
     country: 'United States',
     specialRequests: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    cardholderName: '',
   })
 
   if (!room || !checkIn || !checkOut) {
@@ -66,8 +52,8 @@ function CheckoutForm() {
         <p className="text-muted-foreground mb-6">
           Please select a room and dates to continue with your booking.
         </p>
-        <Link href="/rooms">
-          <Button>Browse Rooms</Button>
+        <Link href="/">
+          <Button>Back to Home</Button>
         </Link>
       </div>
     )
@@ -80,13 +66,31 @@ function CheckoutForm() {
     e.preventDefault()
     setIsLoading(true)
     
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Generate confirmation number
-    const confirmationNumber = `GA${Date.now().toString().slice(-8)}`
-    
-    router.push(`/confirmation?confirmation=${confirmationNumber}`)
+    try {
+      // Create Stripe Checkout Session
+      const session = await createCheckoutSession({
+        roomId: room.id,
+        roomName: room.name,
+        roomType: room.type,
+        checkIn,
+        checkOut,
+        guests,
+        adults: guests,
+        children: 0,
+        nights,
+        nightPrice: priceData.nightPrice,
+        cleaningFee: priceData.cleaningFee,
+        serviceFee: priceData.serviceFee,
+        taxes: priceData.taxes,
+        totalPrice: priceData.total,
+      })
+
+      // Redirect to Stripe Checkout URL
+      window.location.href = session.url
+    } catch (error) {
+      console.error('Checkout error:', error)
+      setIsLoading(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -98,11 +102,11 @@ function CheckoutForm() {
     <div className="container px-4 md:px-6">
       {/* Back Button */}
       <Link 
-        href={`/rooms/${room.id}?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`}
+        href={`/?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`}
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
       >
         <ChevronLeft className="h-4 w-4 mr-1" />
-        Back to Room
+        Back to Home
       </Link>
 
       <h1 className="font-serif text-3xl font-semibold text-foreground mb-8">
@@ -179,110 +183,34 @@ function CheckoutForm() {
               </CardContent>
             </Card>
 
-            {/* Payment Method */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Payment Method</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <RadioGroup 
-                  value={paymentMethod} 
-                  onValueChange={setPaymentMethod}
-                  className="grid grid-cols-2 md:grid-cols-4 gap-3"
-                >
-                  {paymentMethods.map((method) => (
-                    <label
-                      key={method.id}
-                      className={`flex items-center justify-center gap-2 p-4 border rounded-lg cursor-pointer transition-colors ${
-                        paymentMethod === method.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                    >
-                      <RadioGroupItem value={method.id} className="sr-only" />
-                      <span className="text-sm font-medium">{method.name}</span>
-                    </label>
-                  ))}
-                </RadioGroup>
-
-                {paymentMethod === 'credit-card' && (
-                  <div className="space-y-4 mt-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="cardNumber">Card Number</Label>
-                      <div className="relative">
-                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="cardNumber"
-                          name="cardNumber"
-                          placeholder="1234 5678 9012 3456"
-                          value={formData.cardNumber}
-                          onChange={handleInputChange}
-                          className="pl-10"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="expiryDate">Expiry Date</Label>
-                        <Input
-                          id="expiryDate"
-                          name="expiryDate"
-                          placeholder="MM/YY"
-                          value={formData.expiryDate}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="cvv">CVV</Label>
-                        <Input
-                          id="cvv"
-                          name="cvv"
-                          placeholder="123"
-                          value={formData.cvv}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cardholderName">Cardholder Name</Label>
-                      <Input
-                        id="cardholderName"
-                        name="cardholderName"
-                        placeholder="Name on card"
-                        value={formData.cardholderName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod !== 'credit-card' && (
-                  <div className="text-center py-6 text-muted-foreground">
-                    <p>You will be redirected to {paymentMethods.find(m => m.id === paymentMethod)?.name} to complete your payment.</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
             {/* Submit Button */}
-            <Button 
-              type="submit" 
-              className="w-full h-12 text-base"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                'Processing Payment...'
-              ) : (
-                <>
-                  <Lock className="mr-2 h-4 w-4" />
-                  Pay ${priceData.total} & Confirm Booking
-                </>
-              )}
-            </Button>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                <Lock className="h-4 w-4 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground">
+                  Your payment information is encrypted and processed securely by Stripe. We do not store your full card details.
+                </p>
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-14 text-lg font-medium shadow-lg hover:shadow-xl transition-all" 
+                size="lg"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+                    Redirecting to Stripe...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="mr-2 h-4 w-4" />
+                    Book & Pay with Stripe
+                  </>
+                )}
+              </Button>
+            </div>
             
             <p className="text-center text-sm text-muted-foreground">
               By completing this booking, you agree to our Terms of Service and Privacy Policy.

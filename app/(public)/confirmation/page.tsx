@@ -27,7 +27,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
             Booking Confirmed!
           </h1>
           <p className="text-muted-foreground text-lg">
-            Thank you for choosing Grand Azure Resort
+            Thank you for choosing {propertyInfo.name}
           </p>
         </div>
 

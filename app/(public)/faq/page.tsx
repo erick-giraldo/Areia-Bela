@@ -23,7 +23,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Find answers to common questions about your stay at Grand Azure Resort.
+              Find answers to common questions about your stay at Areia Bela.
             </p>
           </div>
         </div>

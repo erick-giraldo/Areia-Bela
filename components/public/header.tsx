@@ -2,16 +2,16 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, User } from 'lucide-react'
+import { Menu, Phone, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '@/components/ui/sheet'
 
 const navigation = [
-  { name: 'La casa', href: '/rooms' },
-  { name: 'Reseñas', href: '/reviews' },
-  { name: 'Sobre nosotros', href: '/about' },
-  { name: 'Ofertas', href: '/offers' },
-  { name: 'Contacto', href: '/contact' },
+  { name: 'Amenities', href: '/about#amenities' },
+  { name: 'Offers', href: '/offers' },
+  { name: 'Reviews', href: '/reviews' },
+  { name: 'About', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export function Header() {
@@ -27,7 +27,7 @@ export function Header() {
               Areia Bela
             </span>
             <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              Resort & Spa
+              Vacation Rental
             </span>
           </div>
         </Link>
@@ -60,7 +60,7 @@ export function Header() {
               Admin
             </Button>
           </Link>
-          <Link href="/rooms">
+          <Link href="/rooms/1489399156507737323">
             <Button size="sm">
               Book Now
             </Button>
@@ -75,17 +75,17 @@ export function Header() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
-            <div className="flex flex-col gap-6 mt-6 pb-6">
-              <div className="flex flex-col">
-                <span className="font-serif text-xl font-semibold tracking-tight">
-                  Areia Bela
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  St. Petersburg, FL
-                </span>
-              </div>
+          <SheetContent side="right" className="overflow-y-auto">
+            <SheetHeader className="pt-8">
+              <SheetTitle className="font-serif text-xl font-semibold tracking-tight">
+                Areia Bela
+              </SheetTitle>
+              <SheetDescription className="text-[10px] uppercase tracking-[0.2em]">
+                Vacation Rental
+              </SheetDescription>
+            </SheetHeader>
 
+            <div className="flex flex-col gap-6 pb-6 px-4">
               <nav className="flex flex-col gap-4">
                 {navigation.map((item) => (
                   <Link
@@ -113,7 +113,7 @@ export function Header() {
                     Admin Portal
                   </Button>
                 </Link>
-                <Link href="/rooms" onClick={() => setIsOpen(false)}>
+                <Link href="/rooms/1489399156507737323" onClick={() => setIsOpen(false)}>
                   <Button className="w-full">
                     Book Now
                   </Button>

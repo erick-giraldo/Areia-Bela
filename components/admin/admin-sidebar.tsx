@@ -64,7 +64,7 @@ export function AdminSidebar() {
             {!collapsed && (
               <Link href="/admin" className="flex flex-col">
                 <span className="font-serif text-lg font-semibold text-sidebar-foreground">
-                  Grand Azure
+                  Areia Bela
                 </span>
                 <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/60">
                   Admin Portal

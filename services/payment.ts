@@ -11,6 +11,30 @@ export interface PaymentIntent {
   status: 'requires_payment_method' | 'requires_confirmation' | 'succeeded' | 'failed'
 }
 
+export interface CheckoutSession {
+  id: string
+  url: string
+}
+
+export async function createCheckoutSession(
+  bookingDetails: BookingDetails
+): Promise<CheckoutSession> {
+  const response = await fetch('/api/checkout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ bookingDetails }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error || 'Failed to create checkout session')
+  }
+
+  return response.json()
+}
+
 export async function createPaymentIntent(
   bookingDetails: BookingDetails
 ): Promise<PaymentIntent> {
@@ -62,6 +86,6 @@ export async function refundPayment(
 }
 
 export async function getPaymentMethods(): Promise<string[]> {
-  // Available payment methods
-  return ['credit-card', 'apple-pay', 'google-pay', 'paypal']
+  // Only Stripe is used as the payment provider
+  return ['stripe']
 }

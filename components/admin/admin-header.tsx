@@ -45,7 +45,7 @@ export function AdminHeader({ title, description }: AdminHeaderProps) {
               <div className="flex h-16 items-center border-b border-sidebar-border px-4">
                 <Link href="/admin" className="flex flex-col">
                   <span className="font-serif text-lg font-semibold text-sidebar-foreground">
-                    Grand Azure
+                    Areia Bela
                   </span>
                   <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/60">
                     Admin Portal
@@ -170,7 +170,7 @@ export function AdminHeader({ title, description }: AdminHeaderProps) {
             <DropdownMenuLabel>
               <div>
                 <p className="font-medium">Admin User</p>
-                <p className="text-sm text-muted-foreground">admin@grandazure.com</p>
+                <p className="text-sm text-muted-foreground">admin@areiabela.com</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

@@ -69,7 +69,7 @@ export default function OffersPage() {
                       <Calendar className="h-4 w-4" />
                       Valid until {offer.validUntil}
                     </div>
-                    <Link href="/rooms">
+                    <Link href="/rooms/1489399156507737323">
                       <Button size="sm">
                         Book Now
                         <ArrowRight className="ml-1 h-4 w-4" />

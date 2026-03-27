@@ -62,9 +62,9 @@ export default function AdminLoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@grandazure.com"
+                    placeholder="admin@areiabela.com"
                     className="pl-10"
-                    defaultValue="admin@grandazure.com"
+                    defaultValue="admin@areiabela.com"
                     required
                   />
                 </div>

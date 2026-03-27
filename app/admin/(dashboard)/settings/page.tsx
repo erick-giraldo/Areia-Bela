@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Save, Building, Mail, Globe, Bell, Shield, CreditCard, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -69,7 +70,7 @@ export default function SettingsPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="propertyName">Property Name</Label>
-                    <Input id="propertyName" defaultValue="Grand Azure Resort" />
+                    <Input id="propertyName" defaultValue="Areia Bela" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="propertyType">Property Type</Label>
@@ -109,7 +110,7 @@ export default function SettingsPage() {
                   <Textarea 
                     id="description" 
                     rows={4}
-                    defaultValue="Experience luxury at Grand Azure Resort, where stunning ocean views meet world-class amenities..."
+                    defaultValue="Book direct at Areia Bela with a modern, guest-first experience."
                   />
                 </div>
               </CardContent>
@@ -127,7 +128,7 @@ export default function SettingsPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" defaultValue="info@grandazure.com" />
+                    <Input id="email" type="email" defaultValue="host@areiabela.com" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone</Label>
@@ -136,7 +137,7 @@ export default function SettingsPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="website">Website</Label>
-                  <Input id="website" defaultValue="https://grandazure.com" />
+                  <Input id="website" defaultValue="https://areiabela.com" />
                 </div>
               </CardContent>
             </Card>
@@ -393,12 +394,30 @@ export default function SettingsPage() {
                 <CreditCard className="h-5 w-5" />
                 Billing & Subscription
               </CardTitle>
-              <CardDescription>Manage your subscription and payment methods</CardDescription>
+              <CardDescription>Manage your property's billing via Stripe</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground py-8 text-center">
-                Billing features coming soon.
-              </p>
+            <CardContent className="space-y-4">
+              <div className="rounded-lg border p-4 bg-muted/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 className="font-medium">Stripe Integration</h4>
+                    <p className="text-sm text-muted-foreground">Your account is connected to Stripe for payments and billing.</p>
+                  </div>
+                  <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">Connected</Badge>
+                </div>
+                <Button variant="outline" size="sm">Manage in Stripe Dashboard</Button>
+              </div>
+              
+              <div className="space-y-4 pt-4">
+                <h4 className="font-medium text-sm">Subscription Plan</h4>
+                <div className="flex items-center justify-between p-4 rounded-lg border">
+                  <div>
+                    <p className="font-medium">Professional Plan</p>
+                    <p className="text-sm text-muted-foreground">$49/month • Next renewal Apr 19, 2026</p>
+                  </div>
+                  <Button variant="ghost" size="sm">Change Plan</Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
